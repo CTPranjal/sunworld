@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CleverTap Demo — NCB Bank & Sun World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   GLOBAL RESET & DEMO SHELL
+═══════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;scroll-behavior:smooth;}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#f0f2f5;min-height:100vh;}
+button{font-family:inherit;cursor:pointer;}
+a{text-decoration:none;}
+img{display:block;}
+
+/* DEMO SHELL TOP BAR */
+.demo-shell{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:#0a0f1a;
+  padding:0 20px;
+  display:flex;align-items:center;gap:0;
+  height:44px;
+  border-bottom:1px solid #1e2d40;
+}
+.demo-shell-label{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-right:20px;white-space:nowrap;
+}
+.site-tabs{display:flex;gap:0;}
+.site-tab{
+  padding:0 20px;height:44px;display:flex;align-items:center;
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+  color:rgba(255,255,255,.4);cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .2s;white-space:nowrap;
+}
+.site-tab:hover{color:rgba(255,255,255,.7);}
+.site-tab.active{color:#fff;border-bottom-color:#3b82f6;}
+.site-tab.sun-active{color:#f59e0b;border-bottom-color:#f59e0b;}
+
+.persona-area{
+  margin-left:auto;display:flex;align-items:center;gap:8px;
+}
+.persona-label{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-right:4px;}
+.persona-btn{
+  padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;
+  border:1px solid rgba(255,255,255,.15);background:transparent;
+  color:rgba(255,255,255,.5);transition:all .2s;white-space:nowrap;
+}
+.persona-btn:hover{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.8);}
+.persona-btn.active-ncb{background:#1d4ed8;border-color:#1d4ed8;color:#fff;}
+.persona-btn.active-sun{background:#d97706;border-color:#d97706;color:#fff;}
+.ct-live{
+  margin-left:16px;display:flex;align-items:center;gap:6px;
+  font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.06em;
+}
+.ct-live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* SITE CONTAINERS */
+.site{display:none;padding-top:44px;}
+.site.active{display:block;}
+
+/* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
+   NCB iziMOBILE PHONE MOCKUP
+═══════════════════════════════════════ */
+.izi-shell{
+  display:flex;align-items:flex-start;justify-content:center;
+  background:linear-gradient(160deg,#b8dcf8 0%,#c8e8ff 30%,#daeeff 60%,#eaf4ff 100%);
+  min-height:calc(100vh - 44px);
+  padding:32px 24px 48px;gap:40px;
+}
+.izi-phone-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.izi-phone-label{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#1a5090;margin-bottom:14px;
+  display:flex;align-items:center;gap:6px;
+}
+.izi-phone-label::before{content:'';width:20px;height:20px;background:#e8001c;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#fff;}
+.izi-phone{
+  width:375px;background:#fff;border-radius:50px;
+  box-shadow:0 40px 100px rgba(10,30,80,.30),0 8px 24px rgba(10,30,80,.12),inset 0 0 0 1px rgba(255,255,255,.08);
+  overflow:hidden;position:relative;border:10px solid #111827;
+}
+.izi-phone::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:110px;height:30px;background:#111827;border-radius:0 0 22px 22px;z-index:30;
+}
+/* Dynamic island indicator */
+.izi-phone::after{
+  content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  width:80px;height:14px;background:#000;border-radius:20px;z-index:31;
+}
+.izi-screen{
+  height:780px;overflow-y:auto;overflow-x:hidden;
+  background:linear-gradient(180deg,#c8e8ff 0%,#d8f0ff 18%,#eef6ff 38%,#f0f7ff 60%,#f8fbff 100%);
+  scrollbar-width:none;
+}
+.izi-screen::-webkit-scrollbar{display:none;}
+.izi-statusbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:34px 22px 6px;font-size:12px;font-weight:600;color:#0d2a5e;
+  position:sticky;top:0;z-index:20;background:transparent;
+}
+.izi-statusbar-time{font-size:14px;font-weight:700;}
+.izi-statusbar-icons{display:flex;align-items:center;gap:4px;font-size:11px;}
+.izi-topbar{display:flex;align-items:center;justify-content:space-between;padding:4px 18px 10px;}
+.izi-user-row{display:flex;align-items:center;gap:10px;}
+.izi-user-photo{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;border:2px solid rgba(255,255,255,.8);transition:background .3s;flex-shrink:0;
+}
+.izi-greeting{font-size:11px;color:#5a7ab0;margin-bottom:1px;}
+.izi-username{font-size:14px;font-weight:700;color:#0d2a5e;transition:all .3s;}
+.izi-topbar-right{display:flex;gap:8px;}
+.izi-icon-btn{
+  width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.75);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  border:none;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);position:relative;
+}
+.izi-notif-dot{
+  position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;
+  background:#ef4444;border:2px solid #e0f0ff;font-size:8px;font-weight:700;color:#fff;
+  display:flex;align-items:center;justify-content:center;transition:all .3s;
+}
+.izi-balance-card{
+  margin:2px 14px 12px;
+  background:linear-gradient(135deg,#0e40a0 0%,#1455b8 50%,#1a78d4 100%);
+  border-radius:20px;padding:16px 20px 14px;
+  box-shadow:0 8px 28px rgba(14,64,160,.35);position:relative;overflow:hidden;
+}
+.izi-balance-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08);}
+.izi-balance-card::after{content:'';position:absolute;bottom:-50px;left:-30px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.05);}
+.izi-ncb-logo-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;position:relative;z-index:2;}
+.izi-ncb-badge{width:22px;height:22px;border-radius:50%;background:#e8001c;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;letter-spacing:-.5px;flex-shrink:0;}
+.izi-ncb-label-text{font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.04em;font-weight:500;}
+.izi-balance-label{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.04em;margin-bottom:3px;display:flex;align-items:center;gap:5px;position:relative;z-index:2;}
+.izi-balance-amount{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:10px;position:relative;z-index:2;transition:all .3s;}
+.izi-tier-row{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+.izi-tier-chip{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:#fff;border:1px solid rgba(255,255,255,.25);transition:all .3s;}
+.izi-points-chip{font-size:11px;color:rgba(255,255,255,.7);font-weight:500;}
+.izi-quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:4px 12px 6px;}
+.izi-qa{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;cursor:pointer;transition:transform .15s;}
+.izi-qa:active{transform:scale(.93);}
+.izi-qa-ico{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(16,72,160,.1);}
+.izi-qa-lbl{font-size:10px;color:#1a3a6a;font-weight:500;text-align:center;line-height:1.2;}
+.izi-qa-more{color:#1565c0;font-size:11px;font-weight:600;text-align:right;padding:0 16px 10px;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;gap:3px;}
+.izi-nudge{
+  margin:0 12px 10px;border-radius:16px;padding:13px 14px;
+  border:1px solid;cursor:pointer;transition:transform .15s,box-shadow .2s;
+  animation:izi-slide .4s ease;position:relative;overflow:hidden;
+}
+@keyframes izi-slide{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.izi-nudge:active{transform:scale(.98);}
+.izi-nudge.gold{background:linear-gradient(135deg,#fffbf0,#fff8e4);border-color:#f0d068;}
+.izi-nudge.blue{background:linear-gradient(135deg,#f0f7ff,#e8f4ff);border-color:#b0d0f8;}
+.izi-nudge.green{background:linear-gradient(135deg,#f0fdf4,#e6f8ec);border-color:#a0d8b0;}
+.izi-nudge.amber{background:linear-gradient(135deg,#fffbeb,#fff8dc);border-color:#f0cc58;}
+.izi-nudge.purple{background:linear-gradient(135deg,#faf5ff,#f4eeff);border-color:#c8b0f8;}
+.izi-nudge-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+.izi-nudge-ico{font-size:20px;flex-shrink:0;}
+.izi-nudge-from{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#7a90aa;margin-bottom:3px;display:flex;align-items:center;gap:4px;}
+.izi-ct-tag{background:#1565c0;color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px;letter-spacing:.06em;}
+.izi-nudge-title{font-size:12px;font-weight:700;color:#0d2a5e;line-height:1.3;margin-bottom:2px;}
+.izi-nudge-desc{font-size:11px;color:#3a5270;line-height:1.5;}
+.izi-nudge-signal{font-size:10px;color:#7a90aa;margin-top:6px;background:rgba(0,0,0,.04);border-radius:6px;padding:5px 8px;display:flex;align-items:flex-start;gap:4px;line-height:1.4;}
+.izi-nudge-signal::before{content:'⚡';font-size:10px;flex-shrink:0;}
+.izi-nudge-btns{display:flex;gap:7px;margin-top:9px;}
+.izi-nudge-btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid;transition:all .2s;font-family:inherit;cursor:pointer;}
+.izi-nudge-btn.p{background:#1565c0;color:#fff;border-color:#1565c0;}
+.izi-nudge-btn.g{background:transparent;color:#5a7ab0;border-color:#dce6f0;}
+.izi-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 7px;}
+.izi-sec-title{font-size:13px;font-weight:700;color:#0d2a5e;}
+.izi-sec-link{font-size:11px;color:#1565c0;font-weight:600;}
+.izi-accounts-scroll{display:flex;gap:10px;padding:0 12px 12px;overflow-x:auto;scrollbar-width:none;}
+.izi-accounts-scroll::-webkit-scrollbar{display:none;}
+.izi-acct-card{background:#fff;border-radius:14px;padding:12px 14px;min-width:152px;flex-shrink:0;box-shadow:0 2px 10px rgba(16,72,160,.08);border:1px solid rgba(16,72,160,.07);cursor:pointer;transition:transform .15s;}
+.izi-acct-card:active{transform:scale(.97);}
+.izi-acct-type{font-size:9px;font-weight:600;letter-spacing:.06em;color:#7a90aa;margin-bottom:5px;}
+.izi-acct-ico{font-size:16px;margin-bottom:5px;}
+.izi-acct-bal{font-size:15px;font-weight:700;color:#0d2a5e;}
+.izi-acct-num{font-size:10px;color:#aab8cc;margin-top:2px;}
+.izi-acct-delta{font-size:10px;margin-top:5px;}
+.izi-delta-up{color:#15803d;}
+.izi-delta-dn{color:#dc2626;}
+.izi-promo-banner{
+  margin:4px 12px 12px;border-radius:16px;overflow:hidden;
+  background:linear-gradient(135deg,#0e40a0,#1a78d4);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;position:relative;min-height:80px;
+  box-shadow:0 4px 16px rgba(14,64,160,.25);
+}
+.izi-promo-left{display:flex;flex-direction:column;flex:1;z-index:2;position:relative;}
+.izi-promo-tag{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:3px;}
+.izi-promo-title{font-size:13px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:3px;}
+.izi-promo-sub{font-size:10px;color:rgba(255,255,255,.65);line-height:1.4;}
+.izi-promo-ico{font-size:36px;position:relative;z-index:2;}
+.izi-promo-dots{display:flex;gap:4px;justify-content:center;padding:4px 0 6px;}
+.izi-promo-dot{width:5px;height:5px;border-radius:50%;background:#c8d8f0;}
+.izi-promo-dot.active{background:#1565c0;width:14px;border-radius:3px;}
+.izi-offer-card{min-width:190px;max-width:190px;flex-shrink:0;border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 3px 14px rgba(0,0,0,.1);transition:transform .15s;}
+.izi-offer-card:active{transform:scale(.97);}
+.izi-offer-img{height:82px;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative;}
+.izi-offer-brand-tag{position:absolute;top:7px;left:7px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:20px;color:#fff;}
+.izi-offer-body{background:#fff;padding:10px 12px 12px;}
+.izi-offer-title{font-size:11px;font-weight:700;color:#0d2a5e;margin-bottom:2px;line-height:1.3;}
+.izi-offer-desc{font-size:10px;color:#5a7ab0;line-height:1.4;margin-bottom:6px;}
+.izi-offer-cta{font-size:10px;font-weight:700;color:#1565c0;display:flex;align-items:center;gap:2px;}
+.izi-offer-ct-why{font-size:9px;color:#9ab0c8;margin-top:4px;line-height:1.3;}
+.izi-offer-ct-why::before{content:'🎯 ';font-size:9px;}
+.izi-txns{padding:0 0 4px;}
+.izi-txn{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #eef4ff;cursor:pointer;transition:background .15s;}
+.izi-txn:last-child{border-bottom:none;}
+.izi-txn:active{background:#f5f8ff;}
+.izi-txn-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.izi-txn-info{flex:1;}
+.izi-txn-name{font-size:12px;font-weight:600;color:#0d2a5e;}
+.izi-txn-date{font-size:10px;color:#aab8cc;margin-top:1px;}
+.izi-txn-ct{font-size:9px;color:#1565c0;font-weight:600;margin-top:2px;}
+.izi-txn-amt{font-size:12px;font-weight:700;}
+.izi-txn-amt.cr{color:#15803d;}
+.izi-txn-amt.dr{color:#dc2626;}
+.izi-bottom-nav{
+  position:sticky;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(16,72,160,.08);display:flex;align-items:center;z-index:20;padding:6px 0 14px;
+}
+.izi-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;color:#aab8cc;cursor:pointer;transition:color .2s;padding:4px 0;font-weight:500;}
+.izi-nav-item.active{color:#1565c0;}
+.izi-nav-ico{font-size:19px;}
+.izi-nav-qr{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
+.izi-nav-qr-btn{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#1565c0,#1e88e5);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-top:-18px;box-shadow:0 4px 14px rgba(16,72,160,.4);}
+.izi-nav-qr-lbl{font-size:9px;color:#aab8cc;font-weight:500;}
+.izi-context-panel{width:320px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;}
+.izi-ctx-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.izi-ctx-hdr{padding:13px 16px 11px;border-bottom:1px solid #f0f4fa;display:flex;align-items:flex-start;justify-content:space-between;}
+.izi-ctx-title{font-size:13px;font-weight:700;color:#0d2a5e;}
+.izi-ctx-sub{font-size:10px;color:#aab8cc;margin-top:1px;}
+.izi-ctx-tag{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:10px;background:#eff6ff;color:#1565c0;white-space:nowrap;flex-shrink:0;margin-left:8px;}
+.izi-ctx-body{padding:12px 16px;}
+.izi-ctx-row{display:flex;align-items:flex-start;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f5f8ff;font-size:12px;gap:8px;}
+.izi-ctx-row:last-child{border-bottom:none;}
+.izi-ctx-key{color:#7a90aa;flex-shrink:0;line-height:1.4;}
+.izi-ctx-val{font-weight:600;color:#0d2a5e;text-align:right;line-height:1.4;}
+.izi-ctx-val.highlight{color:#1565c0;}
+.izi-ctx-val.amber{color:#b45309;}
+.izi-spend-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.izi-spend-row:last-child{margin-bottom:0;}
+.izi-spend-cat{font-size:11px;color:#3a5270;width:78px;flex-shrink:0;}
+.izi-spend-bg{flex:1;height:6px;background:#eef4ff;border-radius:3px;overflow:hidden;}
+.izi-spend-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.izi-spend-val{font-size:10px;color:#3a5270;width:50px;text-align:right;font-weight:600;}
+
+SUN WORLD SITE
+═══════════════════════════════════════ */
+#sun-site header{
+  background:#fff;
+  border-bottom:1px solid var(--sun-border);
+  position:sticky;top:44px;z-index:100;
+}
+.sun-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:68px;
+}
+.sun-logo{display:flex;align-items:center;gap:10px;}
+.sun-logo-ico{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sun-orange),var(--sun-amber));
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.sun-logo-text{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--sun-orange2);}
+.sun-logo-text span{color:var(--sun-t2);font-weight:400;font-size:18px;}
+.sun-header-nav{display:flex;gap:0;}
+.sun-nav-item{
+  padding:0 16px;height:40px;display:flex;align-items:center;
+  font-size:12px;font-weight:500;color:var(--sun-t2);
+  cursor:pointer;border-radius:8px;transition:all .2s;
+}
+.sun-nav-item:hover{background:#fff5eb;color:var(--sun-orange);}
+.sun-nav-item.active{color:var(--sun-orange);font-weight:700;}
+.sun-header-right{display:flex;align-items:center;gap:12px;}
+.sun-member-chip{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 14px 5px 5px;border-radius:24px;
+  border:1px solid var(--sun-border);cursor:pointer;
+  transition:border-color .2s;
+}
+.sun-member-chip:hover{border-color:var(--sun-orange);}
+.sun-avatar{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;
+  transition:background .3s;
+}
+.sun-member-name{font-size:11px;font-weight:600;color:var(--sun-t2);}
+.sun-member-tier{font-size:10px;color:var(--sun-amber2);font-weight:700;}
+.sun-cart-btn{
+  position:relative;width:36px;height:36px;border-radius:50%;
+  background:var(--sun-orange);border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#fff;transition:background .2s;
+}
+.sun-cart-btn:hover{background:var(--sun-orange2);}
+
+/* SUN SUBNAV */
+.sun-subnav{
+  background:var(--sun-bg);border-bottom:1px solid var(--sun-border);
+  display:flex;padding:0 40px;gap:0;overflow-x:auto;
+}
+.sun-sub-item{
+  padding:0 18px;height:40px;display:flex;align-items:center;
+  font-size:11px;font-weight:500;color:var(--sun-t3);
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .2s;white-space:nowrap;
+}
+.sun-sub-item:hover{color:var(--sun-t2);}
+.sun-sub-item.active{color:var(--sun-orange);border-bottom-color:var(--sun-orange);font-weight:700;}
+
+/* SUN HERO */
+.sun-hero{
+  background:linear-gradient(160deg,#0a1520 0%,#1a2f45 40%,#b83015 100%);
+  padding:48px 40px 36px;position:relative;overflow:hidden;
+}
+.sun-hero::before{
+  content:'';position:absolute;top:-120px;right:-80px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,166,35,.12),transparent 70%);
+  pointer-events:none;
+}
+.sun-hero-label{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-bottom:8px;
+}
+.sun-hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,3.5vw,44px);
+  color:#fff;font-weight:600;line-height:1.2;margin-bottom:6px;
+}
+.sun-hero-title em{font-style:italic;color:var(--sun-amber);}
+.sun-hero-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:24px;line-height:1.6;max-width:560px;}
+
+/* SEARCH BOX */
+.sun-search{
+  background:#fff;border-radius:12px;display:flex;
+  overflow:hidden;max-width:820px;
+  box-shadow:0 8px 40px rgba(0,0,0,.2);
+}
+.sun-sf{
+  flex:1;padding:14px 18px;
+  border-right:1px solid var(--sun-border);
+  cursor:pointer;
+}
+.sun-sf:last-of-type{border-right:none;}
+.sun-sf-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sun-t3);margin-bottom:3px;}
+.sun-sf-val{font-size:13px;font-weight:600;color:var(--sun-t1);}
+.sun-search-btn{
+  background:var(--sun-orange);color:#fff;
+  padding:14px 28px;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;white-space:nowrap;transition:background .2s;
+}
+.sun-search-btn:hover{background:var(--sun-orange2);}
+
+/* CT RECOMMENDATION BAR */
+.sun-ct-bar{
+  background:linear-gradient(90deg,#fffbf0,#fff8e8);
+  border-bottom:1px solid #f0d880;
+  padding:10px 40px;
+  display:flex;align-items:center;gap:12px;
+  transition:all .4s;
+}
+.ct-pill{
+  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--sun-orange);color:#fff;
+  padding:3px 8px;border-radius:4px;white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.sun-ct-bar-text{font-size:12px;color:var(--sun-t1);flex:1;line-height:1.4;}
+.sun-ct-bar-text b{color:var(--sun-orange2);}
+.sun-ct-cta{
+  font-size:11px;font-weight:700;color:var(--sun-orange);
+  background:transparent;border:1px solid var(--sun-orange);
+  padding:5px 12px;border-radius:6px;transition:all .2s;white-space:nowrap;
+}
+.sun-ct-cta:hover{background:var(--sun-orange);color:#fff;}
+
+/* CATALOG LAYOUT */
+.sun-catalog{display:grid;grid-template-columns:220px 1fr;min-height:600px;}
+.sun-sidebar{
+  background:#fff;border-right:1px solid var(--sun-border);
+  padding:20px 16px;
+}
+.sun-filter-title{font-size:12px;font-weight:700;color:var(--sun-t1);margin-bottom:14px;}
+.sun-filter-sec{margin-bottom:18px;}
+.sun-filter-lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sun-t3);margin-bottom:8px;}
+.sun-chip{
+  display:inline-block;padding:4px 11px;margin:3px 3px 3px 0;
+  border:1px solid var(--sun-border);border-radius:20px;
+  font-size:11px;color:var(--sun-t2);cursor:pointer;transition:all .2s;
+}
+.sun-chip:hover{border-color:var(--sun-orange);color:var(--sun-orange);}
+.sun-chip.active{background:var(--sun-orange);border-color:var(--sun-orange);color:#fff;font-weight:600;}
+
+/* PARK GRID */
+.sun-catalog-content{padding:20px 28px;background:var(--sun-bg);}
+.park-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px;}
+.park-card{
+  background:#fff;border:1px solid var(--sun-border);border-radius:14px;
+  overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s;
+  position:relative;
+}
+.park-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(-2px);}
+.park-card.featured{border-color:var(--sun-orange);box-shadow:0 0 0 2px rgba(232,80,28,.1);}
+.park-img{
+  height:158px;display:flex;align-items:flex-end;padding:12px;
+  position:relative;overflow:hidden;
+}
+.park-img-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;}
+.park-badge{
+  position:relative;z-index:2;font-size:9px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;
+}
+.badge-ct{background:var(--sun-orange);color:#fff;}
+.badge-hot{background:rgba(0,0,0,.6);color:#fff;}
+.badge-new{background:#15803d;color:#fff;}
+.badge-visited{background:rgba(0,0,0,.5);color:#fff;}
+.park-body{padding:14px 16px;}
+.park-name{font-size:15px;font-weight:700;color:var(--sun-t1);margin-bottom:3px;}
+.park-loc{font-size:10px;color:var(--sun-t3);margin-bottom:8px;display:flex;align-items:center;gap:3px;}
+.park-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.park-tag{font-size:10px;padding:2px 8px;border-radius:4px;background:#f5f0e8;color:var(--sun-t2);font-weight:500;}
+.park-bottom{display:flex;align-items:center;justify-content:space-between;}
+.park-price{font-size:17px;font-weight:700;color:var(--sun-orange2);}
+.park-orig{font-size:11px;color:var(--sun-t3);text-decoration:line-through;margin-left:5px;}
+.park-book{
+  background:var(--sun-orange);color:#fff;
+  padding:7px 14px;border-radius:8px;font-size:11px;font-weight:700;
+  border:none;transition:background .2s;
+}
+.park-book:hover{background:var(--sun-orange2);}
+.park-ct-why{
+  background:#fff8ec;border-top:1px solid #fde68a;
+  padding:8px 16px;font-size:11px;color:var(--sun-t2);
+  display:flex;align-items:flex-start;gap:5px;
+}
+.park-ct-why::before{content:'🎯';font-size:11px;flex-shrink:0;}
+
+/* JOURNEY SECTION */
+.sun-journey{background:var(--sun-bg);padding:28px 40px;}
+.journey-tabs{
+  display:flex;gap:0;background:#fff;border-radius:12px;
+  padding:4px;border:1px solid var(--sun-border);
+  margin-bottom:24px;max-width:500px;
+}
+.jtab{
+  flex:1;padding:8px 14px;border-radius:8px;
+  font-size:11px;font-weight:600;cursor:pointer;
+  color:var(--sun-t3);transition:all .2s;text-align:center;border:none;background:none;
+}
+.jtab.active{background:var(--sun-orange);color:#fff;}
+.journey-phase{display:none;}
+.journey-phase.active{display:block;}
+.journey-card{
+  background:#fff;border:1px solid var(--sun-border);border-radius:12px;
+  overflow:hidden;margin-bottom:14px;
+}
+.journey-card-hdr{
+  padding:16px 20px;border-bottom:1px solid var(--sun-border);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.jcard-ico{font-size:26px;flex-shrink:0;}
+.jcard-title{font-size:13px;font-weight:700;color:var(--sun-t1);margin-bottom:2px;}
+.jcard-sub{font-size:11px;color:var(--sun-t3);}
+.journey-card-body{padding:16px 20px;}
+.itin-row{
+  display:flex;gap:12px;padding:9px 0;
+  border-bottom:1px solid var(--sun-border);
+}
+.itin-row:last-child{border-bottom:none;}
+.itin-time{font-size:11px;font-weight:700;color:var(--sun-t3);width:48px;flex-shrink:0;padding-top:1px;}
+.itin-ico{font-size:16px;flex-shrink:0;}
+.itin-name{font-size:12px;font-weight:700;color:var(--sun-t1);margin-bottom:1px;}
+.itin-note{font-size:11px;color:var(--sun-t3);line-height:1.45;}
+
+/* IN-PARK NOTIFICATIONS */
+.inpark-notif{
+  border-radius:12px;padding:14px 16px;margin-bottom:12px;
+  display:flex;gap:12px;border:1px solid;
+  animation:nudgeIn .35s ease;cursor:pointer;
+}
+.n-amber{background:#fffbeb;border-color:#fcd34d;}
+.n-sky{background:#f0f9ff;border-color:#bae6fd;}
+.n-green{background:#f0fdf4;border-color:#bbf7d0;}
+.n-orange{background:#fff7ed;border-color:#fed7aa;}
+.ip-ico{font-size:22px;flex-shrink:0;}
+.ip-from{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sun-t3);margin-bottom:3px;display:flex;align-items:center;gap:4px;}
+.ip-from-tag{background:var(--sun-orange);color:#fff;font-size:8px;padding:1px 4px;border-radius:2px;}
+.ip-title{font-size:13px;font-weight:700;color:var(--sun-t1);margin-bottom:2px;}
+.ip-desc{font-size:11px;color:var(--sun-t2);line-height:1.5;}
+.ip-action{font-size:11px;font-weight:700;color:var(--sun-orange);margin-top:6px;}
+
+/* POST-VISIT */
+.post-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+.post-card{
+  background:#fff;border:1px solid var(--sun-border);border-radius:10px;
+  padding:16px;cursor:pointer;transition:box-shadow .2s;
+}
+.post-card:hover{box-shadow:0 3px 16px rgba(0,0,0,.07);}
+.post-ico{font-size:26px;margin-bottom:8px;}
+.post-title{font-size:12px;font-weight:700;color:var(--sun-t1);margin-bottom:3px;}
+.post-desc{font-size:11px;color:var(--sun-t3);line-height:1.5;margin-bottom:8px;}
+.post-cta{font-size:11px;font-weight:700;color:var(--sun-orange);}
+
+/* NCB CROSS SELL inside Sun */
+.ncb-xsell-strip{
+  background:linear-gradient(135deg,var(--ncb-navy),var(--ncb-blue));
+  padding:18px 40px;
+  display:flex;align-items:center;gap:20px;
+}
+.ncb-xs-left{flex:1;}
+.ncb-xs-tag{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ncb-gold2);margin-bottom:5px;}
+.ncb-xs-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;}
+.ncb-xs-desc{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;}
+.ncb-xs-btn{
+  padding:9px 20px;border-radius:8px;font-size:12px;font-weight:700;
+  background:var(--ncb-gold2);color:var(--ncb-navy);border:none;
+  white-space:nowrap;transition:opacity .2s;flex-shrink:0;
+}
+.ncb-xs-btn:hover{opacity:.88;}
+
+/* SUN FOOTER */
+.sun-footer{background:var(--sun-t1);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;}
+.sun-footer-logo{font-family:'Playfair Display',serif;font-size:16px;color:rgba(255,255,255,.4);}
+.sun-footer-logo em{color:var(--sun-amber);}
+.sun-footer-note{font-size:10px;color:rgba(255,255,255,.2);}
+
+/* ═══ SHARED UTILITIES ═══ */
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════
+     DEMO SHELL
+════════════════════════════ -->
+<div class="demo-shell">
+  <div class="demo-bar-label">CleverTap Demo</div>
+  <div class="site-tabs">
+    <div class="site-tab active" id="tab-ncb" onclick="showSite('ncb')">🏦 NCB Bank</div>
+    <div class="site-tab" id="tab-sun" onclick="showSite('sun')">☀️ Sun World</div>
+  </div>
+  <div class="persona-area">
+    <span class="persona-label">Persona:</span>
+    <div id="persona-btns"></div>
+    <div class="ct-live"><div class="ct-live-dot"></div>CleverTap</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     NCB BANK SITE
+════════════════════════════ -->
+<div class="site active" id="ncb-site">
+  <div class="izi-shell">
+    <div class="izi-phone-wrap">
+      <div style="text-align:center;margin-bottom:18px;">
+        <div style="font-size:12px;color:#4a6a9a;font-weight:500;margin-bottom:4px;letter-spacing:.04em;">Chào mừng bạn đến với</div>
+        <div style="font-size:22px;font-weight:800;color:#0a2d6e;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:6px;">
+          <span style="background:#e8001c;color:#fff;font-size:11px;font-weight:900;padding:3px 7px;border-radius:6px;letter-spacing:.02em;">NCB</span>
+          iziMobile
+        </div>
+      </div>
+      <div class="izi-phone">
+        <div class="izi-screen">
+          <div class="izi-statusbar">
+            <div class="izi-statusbar-time" id="izi-time">9:41</div>
+            <div class="izi-statusbar-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="#0d2a5e"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+              <svg width="15" height="12" viewBox="0 0 15 12" fill="#0d2a5e"><path d="M7.5 2.5C5.0 2.5 2.8 3.5 1.2 5.1L0 3.9C1.9 2.0 4.6 0.8 7.5 0.8s5.6 1.2 7.5 3.1l-1.2 1.2C12.2 3.5 10.0 2.5 7.5 2.5z"/><path d="M7.5 5.5c-1.5 0-2.8.6-3.8 1.5L2.5 5.8C3.8 4.7 5.6 4.0 7.5 4.0s3.7.7 5.0 1.8l-1.2 1.2C10.3 6.1 9.0 5.5 7.5 5.5z"/><circle cx="7.5" cy="10" r="1.5"/></svg>
+              <span style="font-size:11px;font-weight:700;color:#0d2a5e;">100%</span>
+            </div>
+          </div>
+          <div class="izi-topbar">
+            <div class="izi-user-row">
+              <div class="izi-user-photo" id="izi-photo" style="background:#1565c0">L</div>
+              <div>
+                <div class="izi-greeting" id="izi-greeting">Chào buổi sáng,</div>
+                <div class="izi-username" id="izi-uname">Linh Tran</div>
+              </div>
+            </div>
+            <div class="izi-topbar-right">
+              <button class="izi-icon-btn">🔔<div class="izi-notif-dot" id="izi-notif-dot">3</div></button>
+            </div>
+          </div>
+          <div class="izi-balance-card">
+            <div class="izi-ncb-logo-row">
+              <div class="izi-ncb-badge">NCB</div>
+              <div class="izi-ncb-label-text">Tổng số dư</div>
+              <span style="margin-left:auto;font-size:14px;color:rgba(255,255,255,.5);">⌄</span>
+            </div>
+            <div class="izi-balance-amount" id="izi-balance">&#8363;2.84B</div>
+            <div class="izi-tier-row">
+              <div class="izi-tier-chip" id="izi-tier">&#11088; VIP Platinum</div>
+              <div class="izi-points-chip" id="izi-points">12,480 pts</div>
+            </div>
+          </div>
+          <div class="izi-quick-actions">
+            <div class="izi-qa"><div class="izi-qa-ico" style="background:linear-gradient(135deg,#e8f0fe,#dbeafe);">&#128260;</div><div class="izi-qa-lbl">Chuyển<br>tiền</div></div>
+            <div class="izi-qa"><div class="izi-qa-ico" style="background:linear-gradient(135deg,#e0f2fe,#bfdbfe);">&#127974;</div><div class="izi-qa-lbl">Gửi<br>tiết kiệm</div></div>
+            <div class="izi-qa"><div class="izi-qa-ico" style="background:linear-gradient(135deg,#dbeafe,#c7d2fe);">&#128221;</div><div class="izi-qa-lbl">Thanh toán<br>hoá đơn</div></div>
+            <div class="izi-qa"><div class="izi-qa-ico" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);">&#128241;</div><div class="izi-qa-lbl">Nạp<br>tiền</div></div>
+          </div>
+          <div class="izi-qa-more">Xem thêm ›</div>
+          <div class="izi-nudge gold" id="izi-nudge" onclick="openNcbModal()">
+            <div class="izi-nudge-top">
+              <div class="izi-nudge-ico" id="izi-nudge-ico">&#128176;</div>
+              <div style="flex:1">
+                <div class="izi-nudge-from"><span class="izi-ct-tag">CLEVERTAP</span> Personalised</div>
+                <div class="izi-nudge-title" id="izi-nudge-title">So du vuot 2.8B - Mo khoa Priority Wealth</div>
+                <div class="izi-nudge-desc" id="izi-nudge-desc">Ban du dieu kien Priority Wealth: RM rieng, xem san pham 14 ngay truoc, lai suat +0.3%.</div>
+              </div>
+            </div>
+            <div class="izi-nudge-signal" id="izi-nudge-signal">Signal: balance milestone . Segment: HNW Saver . Journey: Wealth Upgrade</div>
+            <div class="izi-nudge-btns">
+              <button class="izi-nudge-btn p" id="izi-nudge-cta" onclick="event.stopPropagation();openNcbModal()">Tim hieu them</button>
+              <button class="izi-nudge-btn g" onclick="event.stopPropagation();dismissNcbNudge()">Nhac sau</button>
+            </div>
+          </div>
+          <div class="izi-sec-hdr"><div class="izi-sec-title">Tài khoản của tôi</div><div class="izi-sec-link">Xem tất cả ›</div></div>
+          <div class="izi-accounts-scroll" id="izi-accounts"></div>
+          <div class="izi-sec-hdr"><div class="izi-sec-title">Ưu đãi dành cho bạn</div><div class="izi-sec-link" style="color:#1565c0;font-size:10px;font-weight:600;letter-spacing:.04em;">CleverTap AI ›</div></div>
+          <div class="izi-offers-scroll" id="izi-offers"></div>
+          <div style="padding:0 12px 4px;">
+            <div class="izi-promo-banner" id="izi-promo-banner">
+              <div class="izi-promo-left">
+                <div class="izi-promo-tag">☀️ Sun Group × NCB</div>
+                <div class="izi-promo-title" id="izi-promo-title">Bay Phú Quốc cùng SPA<br>Tiết kiệm đến ₫500K</div>
+                <div class="izi-promo-sub" id="izi-promo-sub">Mở tài khoản NCB — nhận ngay ưu đãi vé máy bay</div>
+              </div>
+              <div class="izi-promo-ico" id="izi-promo-ico">✈️</div>
+            </div>
+            <div class="izi-promo-dots">
+              <div class="izi-promo-dot active"></div>
+              <div class="izi-promo-dot"></div>
+              <div class="izi-promo-dot"></div>
+            </div>
+          </div>
+          <div class="izi-sec-hdr"><div class="izi-sec-title">Giao dịch gần đây</div><div class="izi-sec-link">Xem sao kê ›</div></div>
+          <div class="izi-txns" id="izi-txns"></div>
+          <div class="izi-bottom-nav">
+            <div class="izi-nav-item active"><div class="izi-nav-ico">🏠</div><span>Trang chủ</span></div>
+            <div class="izi-nav-item"><div class="izi-nav-ico">💳</div><span>Tài khoản</span></div>
+            <div class="izi-nav-qr"><div class="izi-nav-qr-btn">📷</div><div class="izi-nav-qr-lbl">QR</div></div>
+            <div class="izi-nav-item"><div class="izi-nav-ico">🃏</div><span>Dịch vụ thẻ</span></div>
+            <div class="izi-nav-item"><div class="izi-nav-ico">⚙️</div><span>Cài đặt</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="izi-context-panel">
+      <div class="izi-ctx-card">
+        <div class="izi-ctx-hdr"><div><div class="izi-ctx-title">Customer Profile</div><div class="izi-ctx-sub" id="ctx-profile-sub">Linh Tran - VIP Platinum</div></div><div class="izi-ctx-tag">Live Data</div></div>
+        <div class="izi-ctx-body" id="ctx-profile-body"></div>
+      </div>
+      <div class="izi-ctx-card">
+        <div class="izi-ctx-hdr"><div><div class="izi-ctx-title">CleverTap Signal</div><div class="izi-ctx-sub">What fired this personalisation</div></div><div class="izi-ctx-tag" style="background:#fff0e8;color:#c84010;">Trigger</div></div>
+        <div class="izi-ctx-body" id="ctx-signal-body"></div>
+      </div>
+      <div class="izi-ctx-card">
+        <div class="izi-ctx-hdr"><div><div class="izi-ctx-title">Spending This Month</div></div><div class="izi-ctx-tag">Analytics</div></div>
+        <div class="izi-ctx-body" id="ctx-spend-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NCB MODAL -->
+<div class="modal-bg" id="ncb-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeNcbModal()">x</button>
+    <div class="modal-icon" id="ncb-modal-ico">&#128176;</div>
+    <div class="modal-title" id="ncb-modal-title">Priority Wealth Management</div>
+    <div class="modal-body" id="ncb-modal-body"></div>
+    <div class="modal-detail" id="ncb-modal-detail"></div>
+    <div class="modal-actions">
+      <button class="modal-btn p" onclick="closeNcbModal()">Apply Now</button>
+      <button class="modal-btn s" onclick="closeNcbModal()">Not Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     SUN WORLD SITE
+════════════════════════════ -->
+<div class="site" id="sun-site">
+  <header>
+    <div class="sun-topbar">
+      <div class="sun-logo">
+        <div class="sun-logo-ico">☀️</div>
+        <div class="sun-logo-text">Sun <span>World</span></div>
+      </div>
+      <div class="sun-header-nav">
+        <div class="sun-nav-item active">Parks</div>
+        <div class="sun-nav-item">Experiences</div>
+        <div class="sun-nav-item">Packages</div>
+        <div class="sun-nav-item">Sun Member</div>
+      </div>
+      <div class="sun-header-right">
+        <div class="sun-member-chip">
+          <div class="sun-avatar" id="sun-avatar" style="background:#e8501c">LT</div>
+          <div>
+            <div class="sun-member-name" id="sun-member-name">Linh Tran</div>
+            <div class="sun-member-tier" id="sun-member-tier">Gold Member</div>
+          </div>
+        </div>
+        <button class="sun-cart-btn">🛒</button>
+      </div>
+    </div>
+    <div class="sun-subnav">
+      <div class="sun-sub-item active">All Parks</div>
+      <div class="sun-sub-item">Ba Na Hills</div>
+      <div class="sun-sub-item">Hon Thom</div>
+      <div class="sun-sub-item">Fansipan</div>
+      <div class="sun-sub-item">Ba Den</div>
+      <div class="sun-sub-item">Ha Long</div>
+      <div class="sun-sub-item">Cat Ba</div>
+    </div>
+  </header>
+
+  <!-- HERO + SEARCH -->
+  <div class="sun-hero">
+    <div class="sun-hero-label">Sun World — Vietnam's #1 Entertainment Network</div>
+    <h1 class="sun-hero-title" id="sun-hero-title">Welcome back, <em>Linh</em> 👋<br>Your next adventure awaits.</h1>
+    <p class="sun-hero-sub" id="sun-hero-sub">Based on your visit history and group profile, we have personalised today's top picks for you.</p>
+    <div class="sun-search">
+      <div class="sun-sf">
+        <div class="sun-sf-lbl">Destination</div>
+        <div class="sun-sf-val" id="sun-sf-dest">All Sun World Parks</div>
+      </div>
+      <div class="sun-sf">
+        <div class="sun-sf-lbl">Date</div>
+        <div class="sun-sf-val">Sat 28 Mar 2026</div>
+      </div>
+      <div class="sun-sf">
+        <div class="sun-sf-lbl">Guests</div>
+        <div class="sun-sf-val" id="sun-sf-guests">2 Adults, 1 Child</div>
+      </div>
+      <button class="sun-search-btn">Search →</button>
+    </div>
+  </div>
+
+  <!-- CT REC BAR -->
+  <div class="sun-ct-bar">
+    <div class="ct-pill">🎯 CleverTap Pick</div>
+    <div class="sun-ct-bar-text" id="sun-ct-bar-text"><b>Based on your NCB Visa spend on Sun Phu Quoc Airways (23 Mar)</b> — Families flying to Phu Quoc convert at 3.2× on Hon Thom cable car + water park bundle. Booking window: this Saturday.</div>
+    <button class="sun-ct-cta" id="sun-ct-cta" onclick="openSunModal('honthom')">See Bundle →</button>
+  </div>
+
+  <!-- CATALOG -->
+  <div class="sun-catalog">
+    <div class="sun-sidebar">
+      <div class="sun-filter-title">Filter</div>
+      <div class="sun-filter-sec">
+        <div class="sun-filter-lbl">Region</div>
+        <span class="sun-chip active">All Vietnam</span>
+        <span class="sun-chip">North</span>
+        <span class="sun-chip">Central</span>
+        <span class="sun-chip">South</span>
+      </div>
+      <div class="sun-filter-sec">
+        <div class="sun-filter-lbl">Experience</div>
+        <span class="sun-chip" id="sun-chip-kids">Kids-friendly</span>
+        <span class="sun-chip">Cable Car</span>
+        <span class="sun-chip">Water Park</span>
+        <span class="sun-chip">Adventure</span>
+        <span class="sun-chip">Spiritual</span>
+        <span class="sun-chip">Nature</span>
+      </div>
+      <div class="sun-filter-sec">
+        <div class="sun-filter-lbl">Price / Adult</div>
+        <span class="sun-chip">Under ₫400K</span>
+        <span class="sun-chip active">₫400K–₫800K</span>
+        <span class="sun-chip">₫800K+</span>
+      </div>
+    </div>
+
+    <div class="sun-catalog-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:12px;color:var(--sun-t3);" id="sun-catalog-count">Showing <b>8 parks</b> · personalised for you</div>
+        <div style="font-size:12px;color:var(--sun-t2);">Sort: Best match ▾</div>
+      </div>
+      <div class="park-grid" id="sun-park-grid"></div>
+    </div>
+  </div>
+
+  <!-- VISIT JOURNEY -->
+  <div class="sun-journey">
+    <div class="sec-hdr" style="margin-bottom:16px;">
+      <div class="sec-title" style="font-size:15px;" id="sun-journey-title">Your Ba Na Hills Day — Personalised</div>
+      <div style="font-size:11px;color:var(--sun-t3);">CleverTap Journey Engine</div>
+    </div>
+    <div class="journey-tabs">
+      <button class="jtab active" onclick="switchJPhase('pre',this)">Pre-Visit</button>
+      <button class="jtab" onclick="switchJPhase('during',this)">In-Park</button>
+      <button class="jtab" onclick="switchJPhase('post',this)">Post-Visit</button>
+    </div>
+
+    <!-- PRE -->
+    <div class="journey-phase active" id="jphase-pre">
+      <div class="journey-card">
+        <div class="journey-card-hdr">
+          <div class="jcard-ico">📅</div>
+          <div><div class="jcard-title" id="jcard-itin-title">Personalised itinerary — 2 Adults, 1 Child</div><div class="jcard-sub">Optimised for your group · Sent 48hrs before visit</div></div>
+        </div>
+        <div class="journey-card-body" id="jcard-itin-body"></div>
+      </div>
+      <div class="journey-card">
+        <div class="journey-card-hdr">
+          <div class="jcard-ico">🛍️</div>
+          <div><div class="jcard-title" id="jcard-addon-title">Recommended add-ons for your group</div><div class="jcard-sub">CleverTap identified these from your profile</div></div>
+        </div>
+        <div class="journey-card-body" id="jcard-addon-body"></div>
+      </div>
+    </div>
+
+    <!-- DURING -->
+    <div class="journey-phase" id="jphase-during">
+      <div id="jphase-during-content"></div>
+    </div>
+
+    <!-- POST -->
+    <div class="journey-phase" id="jphase-post">
+      <div class="journey-card">
+        <div class="journey-card-hdr">
+          <div class="jcard-ico">⭐</div>
+          <div><div class="jcard-title" id="jcard-post-title">Thank you for visiting!</div><div class="jcard-sub">Post-visit flow triggered 6hrs after park exit</div></div>
+        </div>
+        <div class="journey-card-body">
+          <p style="font-size:13px;color:var(--sun-t2);margin-bottom:10px;" id="jcard-post-intro">How was your day? Rate your experience and earn 200 Sun Points.</p>
+          <div style="display:flex;gap:6px;margin-bottom:14px;" id="star-row">
+            <span style="font-size:22px;cursor:pointer;" onclick="rate(1)">⭐</span>
+            <span style="font-size:22px;cursor:pointer;" onclick="rate(2)">⭐</span>
+            <span style="font-size:22px;cursor:pointer;" onclick="rate(3)">⭐</span>
+            <span style="font-size:22px;cursor:pointer;" onclick="rate(4)">⭐</span>
+            <span style="font-size:22px;cursor:pointer;" onclick="rate(5)">⭐</span>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--sun-t1);margin-bottom:8px;" id="jcard-post-next-lbl">Your next Sun World adventure:</div>
+          <div class="post-grid" id="jphase-post-recs"></div>
+        </div>
+      </div>
+      <div class="journey-card">
+        <div class="journey-card-hdr">
+          <div class="jcard-ico">💌</div>
+          <div><div class="jcard-title" id="jcard-offer-title">Return offer — valid 7 days</div><div class="jcard-sub">CleverTap triggered: repeat visit incentive</div></div>
+        </div>
+        <div class="journey-card-body">
+          <p style="font-size:13px;color:var(--sun-t2);margin-bottom:12px;" id="jcard-offer-text">Book any Sun World park within 7 days and receive 15% off. Your Sun Points also qualify for a free cable car upgrade at Fansipan.</p>
+          <button class="park-book" style="font-size:12px;padding:9px 20px;" onclick="openSunModal('bundle')">Claim Offer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NCB CROSS-SELL INSIDE SUN -->
+  <div class="ncb-xsell-strip" id="sun-ncb-xsell">
+    <div class="ncb-xs-left">
+      <div class="ncb-xs-tag">🏦 CleverTap Cross-Brand Trigger · NCB Bank</div>
+      <div class="ncb-xs-title" id="sun-ncb-xs-title">Pay with NCB Visa and earn 2× Sun Points + 0% instalment</div>
+      <div class="ncb-xs-desc" id="sun-ncb-xs-desc">NCB Visa cardholders get 2× Sun Points on all Sun World transactions, plus 0% instalment for 6 months on purchases above ₫1M. If you do not have an NCB card, apply in 3 minutes — approval in 24 hours.</div>
+    </div>
+    <button class="ncb-xs-btn" onclick="showSite('ncb')">Apply for NCB Visa →</button>
+  </div>
+
+  <div class="sun-footer">
+    <div class="sun-footer-logo">Sun <em>World</em> Vietnam</div>
+    <div class="sun-footer-note">Demo powered by CleverTap Hyper-Personalisation · 2026</div>
+  </div>
+</div>
+
+<!-- SUN MODAL -->
+<div class="modal-bg" id="sun-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeSunModal()">×</button>
+    <div class="modal-icon" id="sun-modal-ico">🏝️</div>
+    <div class="modal-title" id="sun-modal-title">Hon Thom Bundle</div>
+    <div class="modal-body" id="sun-modal-body"></div>
+    <div class="modal-detail" id="sun-modal-detail"></div>
+    <div class="modal-actions">
+      <button class="modal-btn p" onclick="closeSunModal()">Book Now</button>
+      <button class="modal-btn s" onclick="closeSunModal()">Save for Later</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const NCB_PERSONAS = {
+  linh:{
+    label:"Linh - HNW Saver", emoji:"L", avatarBg:"#1565c0",
+    tier:"VIP Platinum", balance:"&#8363;2.84B", month:"+&#8363;24M", points:"12,480 pts", notifs:3, sme:false,
+    nudgeClass:"gold", nudgeIco:"&#128176;",
+    nudgeTitle:"So du vuot &#8363;2.8B — Mo khoa Priority Wealth",
+    nudgeDesc:"Ban du dieu kien Priority Wealth: RM rieng trong 24h, xem dau tu 14 ngay truoc, lai suat +0.3% tat ca tien gui.",
+    nudgeSignal:"Signal: balance milestone crossed · Segment: HNW Saver · Journey: Wealth Upgrade triggered",
+    nudgeCta:"Tim hieu them",
+    modalIco:"&#128176;", modalTitle:"Priority Wealth Management",
+    modalBody:"You have crossed the &#8363;2.8B savings milestone. NCB Priority Wealth gives you a dedicated Relationship Manager within 24 hours, early access to investment products 14 days before public launch, and a preferential 0.3% bonus rate across all term deposits.",
+    modalRows:[["Bonus rate","+0.3% p.a. on all TDs"],["Dedicated RM","Assigned within 24hrs"],["Investment preview","14 days early access"],["SPA Lounge","Unlimited business lounge"],["Eligibility","Qualified — effective today"]],
+    profile:[["Tier","VIP Platinum"],["Balance","&#8363;2.84B"],["Accounts","3 active"],["Card","NCB Visa Platinum"],["With NCB","Since 2019"]],
+    signal:[["Event","Balance crossed &#8363;2.8B threshold"],["Segment","HNW Saver"],["Journey","Wealth Upgrade activated"],["Trigger","Balance milestone · In-app push"],["Channel","iziMobile in-app"]],
+    accounts:[
+      {type:"TIET KIEM",ico:"&#127974;",bal:"&#8363;1.42B",num:"NCB ****8821",change:"+&#8363;12M thang nay",up:true,bg:"#f0fdf4"},
+      {type:"TIEN GUI CO KY",ico:"&#128200;",bal:"&#8363;1.20B",num:"9 thang · 7.2% p.a.",change:"Het han sau 43 ngay",up:true,bg:"#eff6ff"},
+      {type:"THANH TOAN",ico:"&#128179;",bal:"&#8363;218M",num:"NCB ****3302",change:"-&#8363;4.2M thang nay",up:false,bg:"#fff9f0"},
+    ],
+    offers:[
+      {brand:"NCB",brandColor:"#1565c0",bg:"linear-gradient(135deg,#1565c0,#1976d2)",ico:"📊",title:"NCB Premier Bond — Preview",desc:"Platinum members: 14-ngày truy cập sớm. Lãi suất 8.1% p.a. Số lượng có hạn.",cta:"Xem ngay",why:"Platinum tier · balance >1B · investment intent detected"},
+      {brand:"SPA",brandColor:"#0055a5",bg:"linear-gradient(135deg,#0040a0,#0066cc)",ico:"✈️",title:"Sun Phu Quoc Airways — giảm ₫500K",desc:"NCB VIP Platinum: ₫500,000 off vé SPA + phòng chờ VIP lounge. Hiệu lực đến Jun 2026.",cta:"Mua vé ngay",why:"NCB VIP tier · SPA partnership · travel spend ₫3.2M on 23 Mar"},
+      {brand:"Sun World",brandColor:"#c84010",bg:"linear-gradient(135deg,#c84010,#e8501c)",ico:"🏝️",title:"Hòn Thơm — giảm 15% qua NCB Visa",desc:"Bạn vừa bay Phú Quốc. NCB Visa: 15% off cáp treo + công viên nước Aquatopia.",cta:"Book now",why:"Signal: SPA Visa charge 23 Mar · cross-brand trigger active"},
+      {brand:"NCB",brandColor:"#7e22ce",bg:"linear-gradient(135deg,#7e22ce,#9333ea)",ico:"🏠",title:"Vay mua nhà — ₫3.2B eligibility",desc:"Thu nhập + tiết kiệm đủ điều kiện. 5.49% p.a. cố định 2 năm. Duyệt trong 3 phút.",cta:"Pre-approve",why:"Income 2.6x repayment · no existing loan · high eligibility"},
+    ],
+    txns:[
+      {ico:"&#127978;",bg:"#f0fdf4",name:"Vinmart Premium",date:"Hom nay, 10:42",amt:"-&#8363;1,240,000",type:"dr",ct:""},
+      {ico:"&#128184;",bg:"#eff6ff",name:"Salary Credit",date:"Hom qua",amt:"+&#8363;85,000,000",type:"cr",ct:""},
+      {ico:"&#9992;&#65039;",bg:"#fff0e8",name:"Sun Phu Quoc Airways",date:"23 Thang 3",amt:"-&#8363;3,200,000",type:"dr",ct:"→ CT cross-sell: Sun World triggered"},
+      {ico:"&#127973;",bg:"#f5f0ff",name:"Vinmec Hospital",date:"21 Thang 3",amt:"-&#8363;4,500,000",type:"dr",ct:""},
+      {ico:"&#128176;",bg:"#f0fdf4",name:"Term Deposit Interest",date:"20 Thang 3",amt:"+&#8363;7,200,000",type:"cr",ct:""},
+    ],
+    spend:[
+      {cat:"Dining",pct:28,val:"&#8363;12.4M",color:"#1565c0"},
+      {cat:"Travel",pct:22,val:"&#8363;9.8M",color:"#0891b2"},
+      {cat:"Healthcare",pct:18,val:"&#8363;8.0M",color:"#7c3aed"},
+      {cat:"Shopping",pct:18,val:"&#8363;8.0M",color:"#c84010"},
+      {cat:"Utilities",pct:14,val:"&#8363;6.2M",color:"#15803d"},
+    ],
+    promoBanner:{title:"Bay Phú Quốc cùng SPA<br><b>Tiết kiệm đến ₫500K</b>",sub:"NCB VIP Platinum · Phòng chờ VIP lounge included",ico:"✈️",bg:"linear-gradient(135deg,#0040a0,#0066cc)"}
+  },
+  minh:{
+    label:"Minh - Young Professional", emoji:"M", avatarBg:"#15803d",
+    tier:"Rising Star", balance:"&#8363;184M", month:"+&#8363;6.2M", points:"2,340 pts", notifs:5, sme:false,
+    nudgeClass:"blue", nudgeIco:"&#127968;",
+    nudgeTitle:"Con 3 thang de du coc mua nha dau tien",
+    nudgeDesc:"Tiet kiem tang 18% trong 3 thang. NCB co the can duyet vay truoc cho ban ngay — chi mat 3 phut.",
+    nudgeSignal:"Signal: savings velocity 18% MoM · Segment: First Home Buyer · Journey: Home Loan Nudge",
+    nudgeCta:"Xem tuy chon vay",
+    modalIco:"&#127968;", modalTitle:"Home Loan Pre-Approval",
+    modalBody:"Based on your savings growth of &#8363;6.2M per month, you are projected to reach the &#8363;180M deposit threshold in approximately 3 months. NCB can pre-approve your loan now so you are ready to act the moment you find a property.",
+    modalRows:[["Loan eligibility","Up to &#8363;900M"],["Interest rate","5.49% p.a. (fixed 2yr)"],["Monthly repayment","approx &#8363;7.2M"],["Grace period","Up to 24 months"],["Pre-approval time","3 minutes online"]],
+    profile:[["Tier","Rising Star"],["Balance","&#8363;184M"],["Savings growth","+18% MoM"],["Card","NCB Debit"],["With NCB","Since 2023"]],
+    signal:[["Event","Savings velocity threshold crossed"],["Segment","First Home Buyer"],["Journey","Home Loan Nudge activated"],["Trigger","18% MoM savings growth"],["Channel","In-app push + SMS"]],
+    accounts:[
+      {type:"TIET KIEM",ico:"&#127974;",bal:"&#8363;142M",num:"NCB ****4410",change:"+&#8363;6.2M thang nay",up:true,bg:"#f0fdf4"},
+      {type:"THANH TOAN",ico:"&#128179;",bal:"&#8363;42M",num:"NCB ****9021",change:"-&#8363;2.8M thang nay",up:false,bg:"#eff6ff"},
+    ],
+    offers:[
+      {brand:"NCB",brandColor:"#1565c0",bg:"linear-gradient(135deg,#1565c0,#1976d2)",ico:"🏠",title:"Vay mua nhà — cần duyệt trước",desc:"Đủ điều kiện ₫900M · 5.49% cố định 2 năm. Đăng ký trong 3 phút.",cta:"Cần duyệt",why:"Savings velocity 18% · no existing loan · high eligibility"},
+      {brand:"SPA",brandColor:"#0055a5",bg:"linear-gradient(135deg,#0040a0,#0066cc)",ico:"✈️",title:"Sun Phu Quoc Airways — từ ₫990K",desc:"Mở tài khoản NCB và nhận ₫500K giảm giá vé máy bay SPA tới Phú Quốc.",cta:"Xem vé",why:"New NCB account · SPA partnership · travel intent signal"},
+      {brand:"Sun World",brandColor:"#c84010",bg:"linear-gradient(135deg,#c84010,#e8501c)",ico:"🏔️",title:"Ba Na Hills — giảm 20% NCB Visa",desc:"Lần đầu thăm Sun World? NCB Visa giảm 20% cuối tuần này. Có hiệu lực Ba Na.",cta:"Mua vé",why:"First-time Sun World visitor · weekend spend pattern"},
+      {brand:"NCB",brandColor:"#7e22ce",bg:"linear-gradient(135deg,#7e22ce,#9333ea)",ico:"💳",title:"NCB Visa Platinum — nâng cấp",desc:"3x điểm dining + phòng chờ sân bay Sông Hồng. Dựa trên chi tiêu của bạn.",cta:"Nâng cấp",why:"Spend qualifies 3x points · savings momentum strong"},
+    ],
+    txns:[
+      {ico:"&#9749;",bg:"#fff9f0",name:"Highlands Coffee",date:"Hom nay, 08:15",amt:"-&#8363;85,000",type:"dr",ct:""},
+      {ico:"&#128184;",bg:"#f0fdf4",name:"Salary Credit",date:"Hom qua",amt:"+&#8363;28,000,000",type:"cr",ct:""},
+      {ico:"&#128661;",bg:"#f0fdf4",name:"Grab Vietnam",date:"23 Thang 3",amt:"-&#8363;120,000",type:"dr",ct:""},
+      {ico:"&#127918;",bg:"#f5f0ff",name:"Steam Games",date:"22 Thang 3",amt:"-&#8363;450,000",type:"dr",ct:""},
+      {ico:"&#127947;&#65039;",bg:"#fff0e8",name:"California Fitness",date:"20 Thang 3",amt:"-&#8363;600,000",type:"dr",ct:""},
+    ],
+    spend:[
+      {cat:"Food & Drink",pct:34,val:"&#8363;4.8M",color:"#1565c0"},
+      {cat:"Transport",pct:20,val:"&#8363;2.8M",color:"#15803d"},
+      {cat:"Entertainment",pct:18,val:"&#8363;2.5M",color:"#7c3aed"},
+      {cat:"Shopping",pct:16,val:"&#8363;2.2M",color:"#c84010"},
+      {cat:"Health",pct:12,val:"&#8363;1.7M",color:"#0891b2"},
+    ],
+    promoBanner:{title:"Ba Na Hills cuối tuần này<br><b>NCB Visa giảm 20%</b>",sub:"Sun World × NCB · Ưu đãi lần đầu trải nghiệm",ico:"🏔️",bg:"linear-gradient(135deg,#166534,#1e7a40)"}
+  },
+  huong:{
+    label:"Huong - SME Owner", emoji:"H", avatarBg:"#7e22ce",
+    tier:"Business Gold", balance:"&#8363;640M", month:"+&#8363;38M", points:"5,820 pts", notifs:7, sme:true,
+    nudgeClass:"green", nudgeIco:"&#127970;",
+    nudgeTitle:"iziBankbiz: Cai dat luong de mo khoa von luu dong &#8363;500M",
+    nudgeDesc:"Tai khoan iziBankbiz da mo 7 ngay nhung chua cai dat luong. Hoan thanh de duoc xet duyet han muc von luu dong.",
+    nudgeSignal:"Signal: day 7 — payroll not configured · Segment: SME Early Stage · Journey: iziBankbiz Activation",
+    nudgeCta:"Cai dat luong",
+    modalIco:"&#127970;", modalTitle:"Activate Payroll — Unlock Working Capital",
+    modalBody:"NCB iziBankbiz automates payroll for up to 20 staff at zero cost, handles quarterly tax filing, and immediately upgrades your credit limit eligibility. Completing setup takes 10 minutes.",
+    modalRows:[["Working capital","Up to &#8363;500M"],["Interest rate","8.5% p.a. flexible"],["Payroll automation","Free for 20 staff"],["Tax filing","Auto quarterly"],["Setup time","approx 10 minutes"]],
+    profile:[["Tier","Business Gold"],["Business","SME · 12 staff"],["iziBankbiz","Day 7 — payroll pending"],["Card","NCB Business Visa"],["With NCB","Since 2022"]],
+    signal:[["Event","Day 7: payroll not configured"],["Segment","SME Early Stage"],["Feature","iziBankbiz Payroll"],["Incentive","&#8363;500M capital unlock"],["Journey","iziBankbiz Activation"]],
+    accounts:[
+      {type:"DOANH NGHIEP",ico:"&#127970;",bal:"&#8363;280M",num:"NCB Biz ****7741",change:"+&#8363;38M thang nay",up:true,bg:"#faf5ff"},
+      {type:"CA NHAN",ico:"&#127974;",bal:"&#8363;310M",num:"NCB ****2209",change:"+&#8363;8M thang nay",up:true,bg:"#f0fdf4"},
+      {type:"DU PHONG THUE",ico:"&#128203;",bal:"&#8363;50M",num:"NCB ****8832",change:"Du phong thue Q1",up:true,bg:"#fffbeb"},
+    ],
+    offers:[
+      {brand:"NCB",brandColor:"#15803d",bg:"linear-gradient(135deg,#15803d,#16a34a)",ico:"⚡",title:"Vốn lưu động ₫500M — sẵn sàng",desc:"Hoàn thành cài đặt lương để kích hoạt. Lãi 8.5% p.a. rút linh hoạt.",cta:"Kích hoạt",why:"Payroll pending · strong inflows · high eligibility"},
+      {brand:"SPA",brandColor:"#0055a5",bg:"linear-gradient(135deg,#0040a0,#0066cc)",ico:"✈️",title:"SPA Business Lounge — cho nhóm",desc:"NCB Business Gold: phòng chờ SPA cho tới 3 thành viên mỗi chuyến bay.",cta:"Xem ưu đãi",why:"Business Gold tier · SPA lounge partnership active · team travel"},
+      {brand:"Sun World",brandColor:"#c84010",bg:"linear-gradient(135deg,#c84010,#e8501c)",ico:"🎉",title:"Vé doanh nghiệp Sun World — 25% off",desc:"NCB Business clients: 25% off vé nhóm tại Ba Na Hills hoặc Hòn Thơm (5+ vé).",cta:"Mua vé nhóm",why:"SME profile · Q2 team outing · NCB × Sun World promo"},
+      {brand:"NCB",brandColor:"#7e22ce",bg:"linear-gradient(135deg,#7e22ce,#9333ea)",ico:"💳",title:"NCB Business Visa — đặt hạn nhân viên",desc:"Giới hạn chi tiêu theo từng nhân viên. Cashback chi phí nhà cung cấp.",cta:"Đăng ký",why:"12 staff · payroll pending · supplier spend ₫28M/month"},
+    ],
+    txns:[
+      {ico:"&#128101;",bg:"#faf5ff",name:"Luong nhan vien (ban nhap)",date:"Het han sau 3 ngay",amt:"-&#8363;42,000,000",type:"dr",ct:"→ Cai dat tu dong qua iziBankbiz"},
+      {ico:"&#128184;",bg:"#f0fdf4",name:"Khach hang thanh toan",date:"Hom nay, 09:00",amt:"+&#8363;120,000,000",type:"cr",ct:""},
+      {ico:"&#128230;",bg:"#fff0e8",name:"Nha cung cap — VN Materials",date:"22 Thang 3",amt:"-&#8363;28,000,000",type:"dr",ct:""},
+      {ico:"&#9889;",bg:"#eff6ff",name:"EVN Dien luc",date:"21 Thang 3",amt:"-&#8363;3,400,000",type:"dr",ct:""},
+      {ico:"&#128176;",bg:"#f0fdf4",name:"Lai tiet kiem",date:"20 Thang 3",amt:"+&#8363;1,800,000",type:"cr",ct:""},
+    ],
+    spend:[
+      {cat:"Payroll",pct:42,val:"&#8363;42M",color:"#7e22ce"},
+      {cat:"Suppliers",pct:28,val:"&#8363;28M",color:"#1565c0"},
+      {cat:"Utilities",pct:12,val:"&#8363;12M",color:"#0891b2"},
+      {cat:"Marketing",pct:10,val:"&#8363;10M",color:"#c84010"},
+      {cat:"Other",pct:8,val:"&#8363;8M",color:"#94a3b8"},
+    ],
+    promoBanner:{title:"Đưa nhóm đi Sun World<br><b>Giảm 25% vé doanh nghiệp</b>",sub:"NCB Business Gold × Sun World · 5+ vé nhóm",ico:"🎉",bg:"linear-gradient(135deg,#b83015,#e8501c)"}
+  },
+  duc:{
+    label:"Duc - Retiree", emoji:"D", avatarBg:"#92400e",
+    tier:"Senior Gold", balance:"&#8363;1.12B", month:"+&#8363;8.4M", points:"8,100 pts", notifs:2, sme:false,
+    nudgeClass:"amber", nudgeIco:"&#9200;",
+    nudgeTitle:"8,100 diem sap het han — 20 Thang 4",
+    nudgeDesc:"Diem cua ban tri gia &#8363;810,000. Tot nhat: ve cap treo Fansipan (2 nguoi) hoac tien mat vao tai khoan.",
+    nudgeSignal:"Signal: 8,100 points expiring 28 days · Segment: Lapsed Redeemer · Journey: Points Rescue",
+    nudgeCta:"Doi diem ngay",
+    modalIco:"&#9200;", modalTitle:"Redeem Before Expiry — April 20",
+    modalBody:"You have 8,100 NCB Reward Points expiring on 20 April 2026. Here are your best redemption options ranked by value.",
+    modalRows:[["Fansipan cable car x2","6,000 pts — &#8363;600K"],["Account cash credit","8,100 pts — &#8363;810,000"],["Sun World Hon Thom","7,500 pts — &#8363;750K"],["Grocery e-vouchers","6,500 pts — &#8363;650K"],["Expiry date","20 April 2026"]],
+    profile:[["Tier","Senior Gold"],["Balance","&#8363;1.12B"],["Points","8,100 — expiring soon"],["FD","Matures 112 days"],["With NCB","Since 2015"]],
+    signal:[["Event","Points within 28 days of expiry"],["Segment","Lapsed Redeemer"],["Last redemption","8 months ago"],["Journey","Points Rescue activated"],["Options ranked","By monetary value"]],
+    accounts:[
+      {type:"TIET KIEM HUU TRI",ico:"&#128116;",bal:"&#8363;820M",num:"NCB ****5511",change:"+&#8363;6.2M thang nay",up:true,bg:"#fffbeb"},
+      {type:"THANH TOAN",ico:"&#128179;",bal:"&#8363;180M",num:"NCB ****4420",change:"+&#8363;2.2M thang nay",up:true,bg:"#eff6ff"},
+      {type:"TIEN GUI CO KY",ico:"&#128200;",bal:"&#8363;120M",num:"12 thang · 7.8% p.a.",change:"Het han sau 112 ngay",up:true,bg:"#f0fdf4"},
+    ],
+    offers:[
+      {brand:"NCB",brandColor:"#92400e",bg:"linear-gradient(135deg,#92400e,#b45309)",ico:"⏰",title:"8,100 điểm hết hạn — đổi ngay",desc:"Tốt nhất: cáp treo Fansipan 2 người (6,000 pts) hoặc ₫810K tiền mặt.",cta:"Đổi điểm",why:"8,100 pts · 28 days to expiry · points rescue journey"},
+      {brand:"SPA",brandColor:"#0055a5",bg:"linear-gradient(135deg,#0040a0,#0066cc)",ico:"✈️",title:"SPA Senior Lounge — từ ₫990K",desc:"Bay với Sun Phu Quoc Airways và sử dụng phòng chờ ưu tiên. Senior Gold benefit.",cta:"Xem chuyến bay",why:"Senior Gold tier · SPA lounge benefit · loyalty partnership"},
+      {brand:"Sun World",brandColor:"#1e3a5f",bg:"linear-gradient(135deg,#1e3a5f,#2563a8)",ico:"⛰️",title:"Fansipan — Starbucks 3,063m",desc:"Mới mở 14/3/2026. Cáp treo Fansipan + cà phê cao nhất Việt Nam.",cta:"Khám phá",why:"New attraction March 2026 · points can cover entry today"},
+      {brand:"NCB",brandColor:"#1565c0",bg:"linear-gradient(135deg,#1565c0,#1976d2)",ico:"📈",title:"Gia hạn tiền gửi — 8.2% p.a.",desc:"Tiền gửi 12 tháng sắp đến hạn. Khóa lãi suất mới trước khi thay đổi.",cta:"Gia hạn ngay",why:"FD matures 112 days · rate lock · strong saving history"},
+    ],
+    txns:[
+      {ico:"&#128138;",bg:"#fff0e8",name:"Pharmacity",date:"Hom nay, 11:30",amt:"-&#8363;240,000",type:"dr",ct:""},
+      {ico:"&#128184;",bg:"#f0fdf4",name:"Pension Credit",date:"Hom qua",amt:"+&#8363;18,000,000",type:"cr",ct:""},
+      {ico:"&#128722;",bg:"#eff6ff",name:"Co.opmart",date:"22 Thang 3",amt:"-&#8363;1,200,000",type:"dr",ct:""},
+      {ico:"&#9889;",bg:"#fffbeb",name:"EVN Dien luc",date:"21 Thang 3",amt:"-&#8363;820,000",type:"dr",ct:""},
+      {ico:"&#128250;",bg:"#f5f0ff",name:"FPT Television",date:"20 Thang 3",amt:"-&#8363;180,000",type:"dr",ct:""},
+    ],
+    spend:[
+      {cat:"Healthcare",pct:32,val:"&#8363;3.2M",color:"#92400e"},
+      {cat:"Groceries",pct:26,val:"&#8363;2.6M",color:"#1565c0"},
+      {cat:"Utilities",pct:22,val:"&#8363;2.2M",color:"#0891b2"},
+      {cat:"Dining",pct:12,val:"&#8363;1.2M",color:"#c84010"},
+      {cat:"Other",pct:8,val:"&#8363;0.8M",color:"#94a3b8"},
+    ],
+    promoBanner:{title:"Fansipan — Starbucks 3,063m<br><b>Đổi 6,000 điểm · Miễn phí vé</b>",sub:"8,100 điểm sắp hết hạn · Sun World × NCB",ico:"⛰️",bg:"linear-gradient(135deg,#1e3a5f,#2563a8)"}
+  }
+};
+
+function switchNcbPersona(k) {
+  currentNcbPersona = k;
+  rebuildPersonaBtns();
+  renderNcb(k);
+}
+
+function renderNcb(k) {
+  const p = NCB_PERSONAS[k];
+  const now = new Date();
+  document.getElementById('izi-time').textContent = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('izi-photo').textContent = p.emoji;
+  document.getElementById('izi-photo').style.background = p.avatarBg;
+  const hr = now.getHours();
+  document.getElementById('izi-greeting').textContent = hr < 12 ? 'Chào buổi sáng,' : hr < 18 ? 'Chào buổi chiều,' : 'Chào buổi tối,';
+  document.getElementById('izi-uname').textContent = p.label.split(' - ')[0];
+  document.getElementById('izi-notif-dot').textContent = p.notifs;
+  document.getElementById('izi-balance').innerHTML = p.balance;
+  document.getElementById('izi-tier').textContent = p.tier;
+  document.getElementById('izi-points').textContent = p.points;
+  const nudge = document.getElementById('izi-nudge');
+  nudge.className = 'izi-nudge ' + p.nudgeClass;
+  nudge.style.display = 'block';
+  document.getElementById('izi-nudge-ico').innerHTML = p.nudgeIco;
+  document.getElementById('izi-nudge-title').innerHTML = p.nudgeTitle;
+  document.getElementById('izi-nudge-desc').innerHTML = p.nudgeDesc;
+  document.getElementById('izi-nudge-signal').textContent = p.nudgeSignal;
+  document.getElementById('izi-nudge-cta').textContent = p.nudgeCta;
+  document.getElementById('izi-accounts').innerHTML = p.accounts.map(a => `
+    <div class="izi-acct-card">
+      <div class="izi-acct-type">${a.type}</div>
+      <div class="izi-acct-ico">${a.ico}</div>
+      <div class="izi-acct-bal">${a.bal}</div>
+      <div class="izi-acct-num">${a.num}</div>
+      <div class="izi-acct-delta ${a.up?'izi-delta-up':'izi-delta-dn'}">${a.up?'▲':'▼'} ${a.change}</div>
+    </div>`).join('');
+  document.getElementById('izi-offers').innerHTML = p.offers.map(o => `
+    <div class="izi-offer-card" onclick="openNcbModal()">
+      <div class="izi-offer-img" style="background:${o.bg}">
+        <span style="filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))">${o.ico}</span>
+        <div class="izi-offer-brand-tag" style="background:${o.brandColor}">${o.brand}</div>
+      </div>
+      <div class="izi-offer-body">
+        <div class="izi-offer-title">${o.title}</div>
+        <div class="izi-offer-desc">${o.desc}</div>
+        <div class="izi-offer-cta">${o.cta} ›</div>
+        <div class="izi-offer-ct-why">${o.why}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('izi-txns').innerHTML = p.txns.map(t => `
+    <div class="izi-txn">
+      <div class="izi-txn-ico" style="background:${t.bg}">${t.ico}</div>
+      <div class="izi-txn-info">
+        <div class="izi-txn-name">${t.name}</div>
+        <div class="izi-txn-date">${t.date}</div>
+        ${t.ct ? `<div class="izi-txn-ct">${t.ct}</div>` : ''}
+      </div>
+      <div class="izi-txn-amt ${t.type}">${t.amt}</div>
+    </div>`).join('');
+  document.getElementById('ctx-profile-sub').textContent = p.label.split(' - ')[0] + ' · ' + p.tier;
+  document.getElementById('ctx-profile-body').innerHTML = p.profile.map(([k,v]) =>
+    `<div class="izi-ctx-row"><div class="izi-ctx-key">${k}</div><div class="izi-ctx-val">${v}</div></div>`).join('');
+  document.getElementById('ctx-signal-body').innerHTML = p.signal.map(([k,v],i) =>
+    `<div class="izi-ctx-row"><div class="izi-ctx-key">${k}</div><div class="izi-ctx-val ${i===0?'highlight':i===2?'amber':''}">${v}</div></div>`).join('');
+  document.getElementById('ctx-spend-body').innerHTML = p.spend.map(s =>
+    `<div class="izi-spend-row">
+      <div class="izi-spend-cat">${s.cat}</div>
+      <div class="izi-spend-bg"><div class="izi-spend-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
+      <div class="izi-spend-val">${s.val}</div>
+    </div>`).join('');
+  // Update promo banner
+  if (p.promoBanner) {
+    document.getElementById('izi-promo-title').innerHTML = p.promoBanner.title;
+    document.getElementById('izi-promo-sub').textContent = p.promoBanner.sub;
+    document.getElementById('izi-promo-ico').textContent = p.promoBanner.ico;
+    document.getElementById('izi-promo-banner').style.background = p.promoBanner.bg || 'linear-gradient(135deg,#0e40a0,#1a78d4)';
+  }
+}
+
+function dismissNcbNudge() { document.getElementById('izi-nudge').style.display='none'; }
+
+function openNcbModal() {
+  const p = NCB_PERSONAS[currentNcbPersona];
+  document.getElementById('ncb-modal-ico').innerHTML = p.modalIco;
+  document.getElementById('ncb-modal-title').textContent = p.modalTitle;
+  document.getElementById('ncb-modal-body').textContent = p.modalBody;
+  document.getElementById('ncb-modal-detail').innerHTML = p.modalRows.map(([k,v]) =>
+    `<div class="modal-row"><span>${k}</span><span>${v}</span></div>`).join('');
+  document.getElementById('ncb-modal').classList.add('open');
+}
+function closeNcbModal() { document.getElementById('ncb-modal').classList.remove('open'); }
+
+
+const SUN_PERSONAS = {
+  linh:{
+    label:"Linh — Family Visit", initials:"LT", avatarBg:"#e8501c",
+    tier:"Gold Member",
+    heroTitle:"Welcome back, <em>Linh</em> Your family adventure starts here.",
+    heroSub:"Based on your last visit to Ba Na Hills and group profile, we have personalised your top picks for this weekend.",
+    sfDest:"Ba Na Hills & Hon Thom", sfGuests:"2 Adults, 1 Child",
+    ctBarText:"<b>Your NCB Visa was charged ₫3,200,000 at Sun Phu Quoc Airways on 23 Mar</b> — Families flying to Phu Quoc convert 3.2x on Hon Thom cable car + water park. Saturday slots filling fast.",
+    ctCta:"See Family Bundle", ctModal:"honthom",
+    chipsKids:true,
+    parks:[
+      {id:"honthom",featured:true,bg:"linear-gradient(135deg,#0369a1,#0ea5e9)",ico:"🏝️",name:"Hon Thom Nature Park",loc:"Phu Quoc Island",tags:["Cable Car","Water Slides","Beach","Kids"],price:"₫750,000",orig:"₫900,000",badge:"CT Pick",badgeCls:"badge-ct",why:"Families with a child aged 5-12 rate this 9.4/10 — top match for your profile"},
+      {id:"bana",featured:false,bg:"linear-gradient(135deg,#166534,#16a34a)",ico:"🏔️",name:"Ba Na Hills",loc:"Da Nang",tags:["Golden Bridge","Fantasy Park","Cable Car","Kids"],price:"₫650,000",orig:"",badge:"You visited",badgeCls:"badge-visited",why:"New Cloudy Mountain trail opened Feb 2026 — your child will love it"},
+      {id:"fansipan",featured:false,bg:"linear-gradient(135deg,#1e3a5f,#2563a8)",ico:"⛰️",name:"Fansipan Legend",loc:"Sa Pa, Lao Cai",tags:["3143m Summit","Cable Car","Buffet"],price:"₫800,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+      {id:"baden",featured:false,bg:"linear-gradient(135deg,#78350f,#b45309)",ico:"🏛️",name:"Ba Den Mountain",loc:"Tay Ninh",tags:["Spiritual","Cable Car","Sunset"],price:"₫420,000",orig:"",badge:"New Route",badgeCls:"badge-new",why:""},
+      {id:"halong",featured:false,bg:"linear-gradient(135deg,#0c4a6e,#0369a1)",ico:"🌊",name:"Ha Long Sun Park",loc:"Ha Long Bay",tags:["Sun Wheel","Fireworks Fri-Sat","Cruise"],price:"₫150,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+      {id:"catba",featured:false,bg:"linear-gradient(135deg,#14532d,#15803d)",ico:"🦅",name:"Cat Ba Sun World",loc:"Cat Ba Island",tags:["Eco","Kayak","Nature"],price:"₫480,000",orig:"",badge:"New",badgeCls:"badge-new",why:""},
+    ],
+    journeyTitle:"Your Ba Na Hills Day — Family of 3",
+    itinTitle:"Personalised itinerary · 2 Adults, 1 Child",
+    itin:[
+      {time:"09:00",ico:"🚡",name:"Cable car to peak — beat the queue",note:"Crowds minimal before 10am. Priority boarding included with your ticket."},
+      {time:"10:30",ico:"🎡",name:"Fantasy Park — kids rides first",note:"Spin Zone and Dragon Coaster ideal for ages 5-10. Queue under 10 min this time."},
+      {time:"12:30",ico:"🍜",name:"Lunch — French Village restaurant",note:"Pre-ordered table reserved. Kids menu available. Skip the 45-min queue."},
+      {time:"14:00",ico:"📸",name:"Golden Bridge — best afternoon light",note:"Photography peak window 14:00-16:00. Fewer visitors post-lunch."},
+      {time:"16:30",ico:"🎭",name:"Evening cultural show — seats reserved",note:"Wristbands collected at info desk. Duration 45 minutes."},
+    ],
+    addons:[
+      {ico:"🎒",name:"Kids Adventure Pack",why:"Bag, water bottle, sunscreen, priority wristband. Rated #1 family add-on.",price:"₫120,000"},
+      {ico:"🍱",name:"Pre-ordered Family Lunch",why:"French Village restaurant. Kids menu included. Saves 45-min queue.",price:"₫350,000"},
+      {ico:"📸",name:"Professional Family Photo Session",why:"Golden Bridge · 30 minutes · 10 edited photos delivered same day.",price:"₫600,000"},
+    ],
+    duringNotifs:[
+      {cls:"n-amber",ico:"🍜",title:"Your lunch table is ready — 12:15",desc:"French Village Restaurant, Table 8. Walk past the fountain — 3 min. Show this to skip welcome queue.",action:"Get directions"},
+      {cls:"n-sky",ico:"🎠",title:"Fantasy Park queue just dropped to 8 min",desc:"Best window to take your child now. Spin Zone reopens in 5 min after maintenance break.",action:"View park map"},
+      {cls:"n-green",ico:"🛍️",title:"30% off Sun World kids gift shop — today only",desc:"Your NCB Visa adds another 10% cashback. Stuffed animals and souvenirs. Next to cable car exit.",action:"Shop now"},
+      {cls:"n-orange",ico:"📸",title:"Golden hour in 25 min — Golden Bridge",desc:"Best family photo window of the day. 8 min walk from your current location near Fantasy Park.",action:"Navigate"},
+    ],
+    postNextLbl:"Parks your family has not visited yet:",
+    postRecs:[
+      {ico:"⛰️",name:"Fansipan Legend",desc:"3,143m summit by cable car. The kids will never forget standing above the clouds.",cta:"See packages →"},
+      {ico:"🏝️",name:"Hon Thom Water Park",desc:"90-min flight from Da Nang. Water slides + cable car. Bundle with Sun Airways.",cta:"Book bundle →"},
+      {ico:"🏛️",name:"Ba Den Mountain",desc:"Spiritual + scenic. Very different from Ba Na Hills. Great for a long weekend.",cta:"Explore →"},
+      {ico:"🌊",name:"Ha Long Sun Park",desc:"Fireworks every Friday-Saturday. Sun Wheel 215m high. Cruise option available.",cta:"Learn more →"},
+    ],
+    offerTitle:"Return offer for Linh — valid 7 days",
+    offerText:"Book any Sun World park within 7 days and get 15% off. Your 4,200 Sun Points also qualify for a free cable car upgrade at Fansipan.",
+    ncbXsTitle:"Pay with NCB Visa — earn 2x Sun Points + 0% instalment",
+    ncbXsDesc:"NCB Visa cardholders earn 2x Sun Points on all Sun World purchases plus 0% instalment on transactions above ₫1M for 6 months. Linh already received 20% off at Ba Na 1901 Restaurant using her NCB Visa last visit."
+  },
+  minh:{
+    label:"Minh — Solo Explorer", initials:"MN", avatarBg:"#15803d",
+    tier:"Silver Member",
+    heroTitle:"What calls you next, <em>Minh</em>? Three peaks down — one to go.",
+    heroSub:"You have visited Fansipan, Ba Den and Ba Na Hills. Cat Ba is the last untouched Sun World experience on your list.",
+    sfDest:"Mountain & Nature Parks", sfGuests:"1 Adult",
+    ctBarText:"<b>You have visited 3 Sun World parks — Cat Ba is the only major one you have not done.</b> Solo early-bird rate available. Quiet weekday slot opening next Tuesday.",
+    ctCta:"See Solo Rate", ctModal:"catba",
+    chipsKids:false,
+    parks:[
+      {id:"catba",featured:true,bg:"linear-gradient(135deg,#14532d,#15803d)",ico:"🦅",name:"Cat Ba Sun World",loc:"Cat Ba Island",tags:["Eco","Kayak","Hidden Lagoon","Solo"],price:"₫420,000",orig:"₫520,000",badge:"CT Pick",badgeCls:"badge-ct",why:"Your solo adventure profile — low crowds, nature, off-peak. Last major park on your list."},
+      {id:"fansipan",featured:false,bg:"linear-gradient(135deg,#1e3a5f,#2563a8)",ico:"⛰️",name:"Fansipan Legend",loc:"Sa Pa, Lao Cai",tags:["3143m","Starbucks Summit","Cloud Sea"],price:"₫800,000",orig:"",badge:"Visited",badgeCls:"badge-visited",why:"New Starbucks at 3063m opened March 2026 — worth a second visit for the view"},
+      {id:"bana",featured:false,bg:"linear-gradient(135deg,#166534,#16a34a)",ico:"🏔️",name:"Ba Na Hills",loc:"Da Nang",tags:["Golden Bridge","BaNa Brew House","Craft Beer"],price:"₫650,000",orig:"",badge:"Visited",badgeCls:"badge-visited",why:""},
+      {id:"halong",featured:false,bg:"linear-gradient(135deg,#0c4a6e,#0369a1)",ico:"🌊",name:"Ha Long Sun Park",loc:"Ha Long Bay",tags:["Fireworks","Sea","Adventure"],price:"₫150,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+      {id:"honthom",featured:false,bg:"linear-gradient(135deg,#0369a1,#0ea5e9)",ico:"🏝️",name:"Hon Thom Nature Park",loc:"Phu Quoc",tags:["Cable Car","Water Slides","Beach"],price:"₫750,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+      {id:"baden",featured:false,bg:"linear-gradient(135deg,#78350f,#b45309)",ico:"🏛️",name:"Ba Den Mountain",loc:"Tay Ninh",tags:["Spiritual","Sunrise","Temple"],price:"₫420,000",orig:"",badge:"Visited",badgeCls:"badge-visited",why:""},
+    ],
+    journeyTitle:"Your Cat Ba Day — Solo Explorer",
+    itinTitle:"Personalised solo itinerary · Quietest trail timing",
+    itin:[
+      {time:"07:30",ico:"🚢",name:"Fast boat from Cat Ba town — book now",note:"Early crossing gets you on the island before tour groups. 25-minute crossing."},
+      {time:"09:00",ico:"🦅",name:"Eastern summit trail — crowd window open",note:"Trail 4 is near-empty before 10am. Panoramic view of Lan Ha Bay. 40-min hike."},
+      {time:"11:00",ico:"🚣",name:"Kayak — hidden lagoon route",note:"Solo kayak available 11am. Hidden lagoon only accessible on weekdays. Book ahead."},
+      {time:"14:00",ico:"🤿",name:"Snorkelling — northern reef (solo-friendly)",note:"Coral reef off north shore. Visibility highest mid-afternoon on clear days."},
+      {time:"17:15",ico:"📸",name:"Sunset viewpoint — golden hour",note:"Sunset at 18:02 today. Viewpoint 3 is the best angle. Bring tripod."},
+    ],
+    addons:[
+      {ico:"🎒",name:"Solo Adventure Pack",why:"Lightweight daypack, trail snacks, rain cover. Curated for solo hikers.",price:"₫90,000"},
+      {ico:"🤿",name:"Snorkelling session — solo guided",why:"Northern reef. Coral visibility rated top experience by solo visitors.",price:"₫280,000"},
+      {ico:"📷",name:"Photography guide — 2hrs",why:"You rated photography #1 interest. Local guide for the best hidden spots.",price:"₫450,000"},
+    ],
+    duringNotifs:[
+      {cls:"n-green",ico:"🌤️",title:"Trail 4 cleared — lowest crowd in 3 months",desc:"Eastern summit trail is open and near-empty right now. 40-min hike, panoramic views. Best window.",action:"Get trail map"},
+      {cls:"n-sky",ico:"🚣",title:"Hidden lagoon kayak — 1 solo slot at 14:00",desc:"Last solo kayak for this afternoon. 20 minutes to claim it before tour group arrives.",action:"Book kayak"},
+      {cls:"n-amber",ico:"🍺",title:"Solo traveller happy hour — Cat Ba Sunset Bar",desc:"Meet other solo travellers. 17:00-18:30. Free first drink with your Sun World wristband.",action:"See details"},
+      {cls:"n-orange",ico:"📸",title:"Golden hour in 25 min — Viewpoint 3",desc:"Best angle for tonight sunset at 18:02. 12 min walk from your current location.",action:"Navigate"},
+    ],
+    postNextLbl:"Your Sun World journey continues:",
+    postRecs:[
+      {ico:"🌊",name:"Ha Long Sun Park",desc:"You have done mountains — now sea. Fireworks every Friday-Saturday. Dine in the Sky experience.",cta:"See packages →"},
+      {ico:"🏛️",name:"Ba Den — overnight camping",desc:"New overnight experience. Sunset + stargazing. Solo-traveller friendly.",cta:"Book camping →"},
+      {ico:"🏔️",name:"Ba Na Hills — photographer route",desc:"New hidden trail for photography enthusiasts. Opens April 2026.",cta:"Join waitlist →"},
+      {ico:"☕",name:"Fansipan — Starbucks at 3063m",desc:"Highest Starbucks in Asia opened March 2026. Worth a second summit.",cta:"See combo →"},
+    ],
+    offerTitle:"Next adventure — solo rate locked 7 days",
+    offerText:"You have visited 3 Sun World parks. Reach 5 and unlock Sun Explorer status — free cable car upgrade at every park and a private photography guide session at Fansipan.",
+    ncbXsTitle:"No NCB card? Apply now and earn 2x points on all Sun World spend",
+    ncbXsDesc:"NCB Visa Platinum earns 3x points on travel and entertainment. Apply online in 3 minutes and get approved in 24 hours — just in time for your Cat Ba trip."
+  },
+  couple:{
+    label:"An & Trang — Couple", initials:"AT", avatarBg:"#be185d",
+    tier:"Silver Member",
+    heroTitle:"A perfect day for two, <em>An & Trang</em>",
+    heroSub:"First-time Sun World visitors? Golden Bridge at sunset is the most photographed couple moment in Vietnam — and Friday slots are almost full.",
+    sfDest:"Romantic Experiences", sfGuests:"2 Adults",
+    ctBarText:"<b>First Sun World visit detected for this profile.</b> Couples who book Ba Na Hills sunset package rate their experience 9.6/10. Friday evening at Golden Bridge — 3 slots remaining this week.",
+    ctCta:"See Sunset Package", ctModal:"bana",
+    chipsKids:false,
+    parks:[
+      {id:"bana",featured:true,bg:"linear-gradient(135deg,#166534,#16a34a)",ico:"🏔️",name:"Ba Na Hills — Sunset Package",loc:"Da Nang",tags:["Golden Bridge","Romantic","Sunset Dinner","Views"],price:"₫1,200,000",orig:"₫1,400,000",badge:"CT Pick",badgeCls:"badge-ct",why:"First-time couples rate Golden Bridge sunset 9.6/10 — your profile is a perfect match"},
+      {id:"honthom",featured:false,bg:"linear-gradient(135deg,#0369a1,#0ea5e9)",ico:"🏝️",name:"Hon Thom Nature Park",loc:"Phu Quoc",tags:["Beach","Sunset Cruise","Cable Car"],price:"₫750,000",orig:"",badge:"Romantic",badgeCls:"badge-new",why:"Sunset beach section loved by couples — private cabana upgrade available"},
+      {id:"fansipan",featured:false,bg:"linear-gradient(135deg,#1e3a5f,#2563a8)",ico:"⛰️",name:"Fansipan Legend",loc:"Sa Pa",tags:["Above the Clouds","Romantic","Buffet"],price:"₫800,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+      {id:"halong",featured:false,bg:"linear-gradient(135deg,#0c4a6e,#0369a1)",ico:"🌊",name:"Ha Long Sun Park",loc:"Ha Long Bay",tags:["Cruise","Fireworks","Dine in Sky"],price:"₫150,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+      {id:"catba",featured:false,bg:"linear-gradient(135deg,#14532d,#15803d)",ico:"🦅",name:"Cat Ba Sun World",loc:"Cat Ba Island",tags:["Eco","Kayak","Peaceful"],price:"₫480,000",orig:"",badge:"New",badgeCls:"badge-new",why:""},
+      {id:"baden",featured:false,bg:"linear-gradient(135deg,#78350f,#b45309)",ico:"🏛️",name:"Ba Den Mountain",loc:"Tay Ninh",tags:["Spiritual","Sunrise","Temple"],price:"₫420,000",orig:"",badge:"Popular",badgeCls:"badge-hot",why:""},
+    ],
+    journeyTitle:"An & Trang — Romantic Ba Na Hills Day",
+    itinTitle:"Personalised couples itinerary · Golden Bridge sunset focus",
+    itin:[
+      {time:"09:00",ico:"🚡",name:"Cable car to summit — quiet morning",note:"Arrive early. Couples report 60% less crowding before 10am on weekdays."},
+      {time:"10:30",ico:"🌸",name:"Flower Gardens — southern quiet path",note:"Southern loop is 60% less crowded than main path. Best for private photos."},
+      {time:"12:30",ico:"🍷",name:"Lunch — Ba Na 1901 Restaurant",note:"Candlelit table reserved. Wine pairing available. 20% off with NCB Visa."},
+      {time:"14:30",ico:"🎭",name:"French Village walkthrough",note:"Cobblestone streets, architecture, cafes. Leisurely 90-minute exploration."},
+      {time:"16:15",ico:"🌅",name:"Golden Bridge — sunset session",note:"Golden light starts 16:32. Arrive by 16:15. Stay 45 min as the sky changes."},
+    ],
+    addons:[
+      {ico:"💐",name:"Couple Flower Bouquet",why:"Photography prop + keepsake. Most popular couple add-on. Hand-delivered.",price:"₫180,000"},
+      {ico:"🍷",name:"Romantic Dinner — candlelit table",why:"French Village. Wine pairing, sunset view. Only 4 tables left this Friday.",price:"₫1,200,000"},
+      {ico:"📸",name:"Couple Photo Session — 60 min",why:"Professional photographer. Golden Bridge + Gardens. 20 edited photos same day.",price:"₫800,000"},
+    ],
+    duringNotifs:[
+      {cls:"n-amber",ico:"🌅",title:"Sunset in 45 min — go to Golden Bridge now",desc:"Golden light starts at 16:32 today. You are 12 minutes away near Fantasy Park. Move now.",action:"Navigate"},
+      {cls:"n-green",ico:"🌸",title:"Southern Garden path is quiet right now",desc:"Only 14 visitors. Perfect for private photos. Turn left past the main fountain.",action:"See map"},
+      {cls:"n-sky",ico:"🍷",title:"Dinner reservation confirmed — Table 4",desc:"French Village Restaurant, 19:00. Sunset view. Smart casual. 5 min from cable car.",action:"Get directions"},
+      {cls:"n-orange",ico:"💌",title:"Surprise: complimentary dessert tonight",desc:"First-time couple visitors receive a complimentary dessert at dinner. Show this to your waiter.",action:"Show at restaurant"},
+    ],
+    postNextLbl:"Your next chapter together:",
+    postRecs:[
+      {ico:"🏝️",name:"Hon Thom — sunset beach for two",desc:"Ba Na Hills was chapter one. Hon Thom sunset beach is chapter two.",cta:"Plan together →"},
+      {ico:"⛰️",name:"Fansipan above the clouds",desc:"Wake up above the clouds in Sa Pa. Most romantic overnight in Vietnam.",cta:"See packages →"},
+      {ico:"🌊",name:"Ha Long private cruise",desc:"Two days, one boat. Dine in the Sky experience — 215m above Ha Long Bay.",cta:"Enquire →"},
+      {ico:"☕",name:"Fansipan — Starbucks at 3063m",desc:"Highest Starbucks in Asia. Coffee above the clouds together.",cta:"Explore →"},
+    ],
+    offerTitle:"An & Trang — anniversary offer waiting",
+    offerText:"Come back for your 6-month anniversary and we will upgrade you to the sunset dinner package complimentary. Book any park within 7 days to register your anniversary date.",
+    ncbXsTitle:"Ba Na 1901 Restaurant — 20% off with NCB Visa",
+    ncbXsDesc:"NCB Visa cardholders get 20% off dining at Sun World partner restaurants including Ba Na 1901. Apply in 3 minutes — get your card before your Friday dinner booking."
+  },
+  huong:{
+    label:"Huong — Loyal Member", initials:"HL", avatarBg:"#7e22ce",
+    tier:"Platinum Member",
+    heroTitle:"Always a pleasure, <em>Huong</em> 6 parks and counting.",
+    heroSub:"You have visited every major Sun World park except Ha Long and Cat Ba. Your 8,100 points expire in 28 days — enough to cover Ha Long entry.",
+    sfDest:"Exclusive & New Experiences", sfGuests:"1 Adult",
+    ctBarText:"<b>8,100 Sun Points expiring 20 April — Ha Long Sun Park entry is 6,000 pts.</b> Use them before they lapse. Platinum members also get Dine in the Sky priority booking.",
+    ctCta:"Redeem Points", ctModal:"points",
+    chipsKids:false,
+    parks:[
+      {id:"halong",featured:true,bg:"linear-gradient(135deg,#0c4a6e,#0369a1)",ico:"🌊",name:"Ha Long Sun Park",loc:"Ha Long Bay",tags:["Dine in Sky","Fireworks Fri-Sat","Sun Wheel 215m"],price:"Points",orig:"₫150,000",badge:"CT Pick",badgeCls:"badge-ct",why:"Only major Sun World park you have not visited — and your 6,000 points cover entry today"},
+      {id:"catba",featured:false,bg:"linear-gradient(135deg,#14532d,#15803d)",ico:"🦅",name:"Cat Ba Sun World",loc:"Cat Ba Island",tags:["Eco","Kayak","Not Visited"],price:"₫480,000",orig:"",badge:"Not Visited",badgeCls:"badge-new",why:"Second remaining park — complete your Sun World map"},
+      {id:"bana",featured:false,bg:"linear-gradient(135deg,#166534,#16a34a)",ico:"🏔️",name:"Ba Na Hills — Platinum Trail",loc:"Da Nang",tags:["New Platinum Trail","Photography","VIP"],price:"Platinum Free",orig:"₫650,000",badge:"Exclusive",badgeCls:"badge-ct",why:"New Platinum-only photography trail opened March 2026"},
+      {id:"fansipan",featured:false,bg:"linear-gradient(135deg,#1e3a5f,#2563a8)",ico:"⛰️",name:"Fansipan Legend",loc:"Sa Pa",tags:["Starbucks 3063m","Visited x2"],price:"₫800,000",orig:"",badge:"Visited x2",badgeCls:"badge-visited",why:""},
+      {id:"honthom",featured:false,bg:"linear-gradient(135deg,#0369a1,#0ea5e9)",ico:"🏝️",name:"Hon Thom Nature Park",loc:"Phu Quoc",tags:["Cable Car","Water Park","Visited"],price:"₫750,000",orig:"",badge:"Visited",badgeCls:"badge-visited",why:""},
+      {id:"baden",featured:false,bg:"linear-gradient(135deg,#78350f,#b45309)",ico:"🏛️",name:"Ba Den Mountain",loc:"Tay Ninh",tags:["Visited x3","Spiritual"],price:"₫420,000",orig:"",badge:"Visited x3",badgeCls:"badge-visited",why:""},
+    ],
+    journeyTitle:"Your Ha Long Sun Park Day — Platinum VIP",
+    itinTitle:"Platinum itinerary · Priority access all day",
+    itin:[
+      {time:"09:00",ico:"🎖️",name:"Platinum fast-track entry — skip all queues",note:"Your wristband activates automatic priority at every gate. No waiting."},
+      {time:"10:30",ico:"🚢",name:"Platinum cruise — private upper deck section",note:"Welcome drink included. Personal guide assigned for the morning cruise."},
+      {time:"12:30",ico:"🌅",name:"Dine in the Sky — pre-reserved",why:"Private cabin at 215m above Ha Long Bay. Platinum priority booking activated."},
+      {time:"14:30",ico:"🤿",name:"VIP snorkelling — Platinum reef section",note:"Access to northern reef only available to Platinum members. Better visibility."},
+      {time:"17:15",ico:"🎆",name:"Fireworks pre-show viewing — VIP terrace",note:"Reserved terrace viewing for Platinum members. Show starts 21:00."},
+    ],
+    addons:[
+      {ico:"🎖️",name:"Platinum Priority Entry",why:"Fast-track all gates. Included with your membership.",price:"Included"},
+      {ico:"🛥️",name:"Private sunset cruise",why:"Platinum upgrade — 45 min private boat. Complimentary for 5+ park visits.",price:"Complimentary"},
+      {ico:"📸",name:"VIP Photography Package — 90 min",why:"Your 6-park album continues. Professional photographer, full day.",price:"₫1,200,000"},
+    ],
+    duringNotifs:[
+      {cls:"n-amber",ico:"🎖️",title:"Platinum concierge Mai is standing by",desc:"Hi Huong — message me for anything today: queue jump, table changes, or extra recommendations.",action:"Message Mai"},
+      {cls:"n-sky",ico:"🚢",title:"Private deck boarding in 15 min",desc:"Upper deck, berth 3. Lychee mocktail ready. Sunset cruise departs at 17:15.",action:"Navigate to berth"},
+      {cls:"n-green",ico:"⭐",title:"6 parks visited — Sun Explorer status in 2 more",desc:"Milestone reached. Visit Cat Ba and one more to unlock Sun Explorer: free entry at all parks for life.",action:"See Explorer benefits"},
+      {cls:"n-orange",ico:"🎁",title:"Surprise: private chef dinner — complimentary",desc:"For our most loyal visitors. Private chef at the floating restaurant tonight. Reserved for you.",action:"Accept gift"},
+    ],
+    postNextLbl:"Two parks to Sun Explorer status:",
+    postRecs:[
+      {ico:"🦅",name:"Cat Ba Sun World — your 7th park",desc:"One more park and you reach Sun Explorer. Cat Ba is the last on your list.",cta:"Complete your map →"},
+      {ico:"🌟",name:"Sun Explorer — 2 parks away",desc:"Unlock complimentary annual pass and your name on the Sun World Wall of Explorers.",cta:"See what awaits →"},
+      {ico:"🏔️",name:"Ba Na Hills Platinum Trail",desc:"New route for Platinum members only. Photography stops not on the public map.",cta:"Access exclusively →"},
+      {ico:"💳",name:"Link NCB Platinum card — 2x Sun Points",desc:"Your NCB Platinum card earns 2x Sun Points on all Sun World spend. Link now.",cta:"Link card →"},
+    ],
+    offerTitle:"Huong — Explorer milestone offer",
+    offerText:"Book Cat Ba and one more park within 30 days and we will waive both entry fees as your milestone reward. Your 8,100 points also cover the Cat Ba day pass.",
+    ncbXsTitle:"Link NCB Platinum — earn 2x Sun Points on every visit",
+    ncbXsDesc:"NCB Platinum Visa cardholders earn 2x Sun Points on all Sun World transactions. Your 8,100 current points would be 16,200 if you had been linked since your first visit. Link now before your next booking."
+  }
+};
+
+const SUN_MODALS = {
+  honthom:{ico:"🏝️",title:"Hon Thom Family Bundle",body:"Cable car + water park for the whole family. Recommended based on your NCB Visa flight to Phu Quoc and your child profile. Aquatopia water slides and Exotica theme park included.",rows:[["Adults (x2)","₫1,500,000"],["Child (1)","₫600,000"],["Bundle saving","₫380,000"],["Valid","Sat 28 Mar 2026"],["NCB Visa benefit","Extra 10% off"]]},
+  bana:{ico:"🏔️",title:"Ba Na Hills Sunset Package",body:"Includes Golden Bridge access, Flower Gardens, and a reserved candlelit table at Ba Na 1901 Restaurant for sunset dinner. First-time couple experience rated 9.6/10.",rows:[["Cable car (x2)","₫1,300,000"],["Sunset dinner","₫1,200,000"],["Bundle saving","₫200,000"],["Table reserved","Friday 19:00"],["Duration","Full day + dinner"]]},
+  catba:{ico:"🦅",title:"Cat Ba Solo Explorer Rate",body:"Full day access plus kayak rental. Quietest Sun World property — lowest crowd density. Hidden lagoon trail accessible on weekdays only. Your profile is a perfect match.",rows:[["Entry ticket","₫420,000"],["Kayak rental","₫150,000"],["Photography guide","optional"],["vs regular price","Save ₫100,000"],["Valid","Tue-Thu only"]]},
+  points:{ico:"⭐",title:"Redeem 8,100 Sun Points",body:"Your points expire 20 April 2026. Best redemption value: Ha Long Sun Park full-day entry (6,000 pts) with ₫210,000 cash credit for the remaining 2,100 points.",rows:[["Ha Long entry","6,000 pts redeemed"],["Cash credit","₫210,000 to NCB account"],["Total value","₫360,000"],["Expiry","20 April 2026"],["Status after","2,100 pts remaining"]]},
+  bundle:{ico:"🎁",title:"7-Day Return Offer",body:"Book any Sun World park within 7 days of your last visit and receive 15% off. Sun Points applied automatically at checkout. No promo code needed.",rows:[["Discount","15% off any park"],["Points","Applied automatically"],["Validity","7 days from today"],["Stacks with","NCB Visa discount"],["Minimum spend","No minimum"]]}
+};
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let currentSite = 'ncb';
+let currentNcbPersona = 'linh';
+let currentSunPersona = 'linh';
+let currentSunModal = null;
+let currentNcbModal = null;
+
+// ═══════════════════════════════════════════════
+// SITE SWITCHING
+// ═══════════════════════════════════════════════
+function showSite(s) {
+  currentSite = s;
+  document.getElementById('ncb-site').classList.toggle('active', s === 'ncb');
+  document.getElementById('sun-site').classList.toggle('active', s === 'sun');
+  document.getElementById('tab-ncb').className = 'site-tab' + (s === 'ncb' ? ' active' : '');
+  document.getElementById('tab-sun').className = 'site-tab' + (s === 'sun' ? ' sun-active' : '');
+  rebuildPersonaBtns();
+}
+
+// ═══════════════════════════════════════════════
+// PERSONA BUTTONS
+// ═══════════════════════════════════════════════
+function rebuildPersonaBtns() {
+  const container = document.getElementById('persona-btns');
+  container.innerHTML = '';
+  if (currentSite === 'ncb') {
+    Object.entries(NCB_PERSONAS).forEach(([k, p]) => {
+      const b = document.createElement('button');
+      b.className = 'persona-btn' + (k === currentNcbPersona ? ' active-ncb' : '');
+      b.textContent = p.label;
+      b.onclick = () => switchNcbPersona(k);
+      container.appendChild(b);
+    });
+  } else {
+    Object.entries(SUN_PERSONAS).forEach(([k, p]) => {
+      const b = document.createElement('button');
+      b.className = 'persona-btn' + (k === currentSunPersona ? ' active-sun' : '');
+      b.textContent = p.label;
+      b.onclick = () => switchSunPersona(k);
+      container.appendChild(b);
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════
+// NCB RENDER
+// ═══════════════════════════════════════════════
+function switchSunPersona(k) {
+  currentSunPersona = k;
+  rebuildPersonaBtns();
+  renderSun(k);
+}
+
+function renderSun(k) {
+  const p = SUN_PERSONAS[k];
+
+  // Header
+  const av = document.getElementById('sun-avatar');
+  av.textContent = p.initials; av.style.background = p.avatarBg;
+  document.getElementById('sun-member-name').textContent = p.label.split(' — ')[0];
+  document.getElementById('sun-member-tier').textContent = p.tier;
+
+  // Hero
+  document.getElementById('sun-hero-title').innerHTML = p.heroTitle;
+  document.getElementById('sun-hero-sub').textContent = p.heroSub;
+  document.getElementById('sun-sf-dest').textContent = p.sfDest;
+  document.getElementById('sun-sf-guests').textContent = p.sfGuests;
+
+  // CT bar
+  document.getElementById('sun-ct-bar-text').innerHTML = p.ctBarText;
+  document.getElementById('sun-ct-cta').textContent = p.ctCta;
+  document.getElementById('sun-ct-cta').onclick = () => openSunModal(p.ctModal);
+
+  // Kids chip
+  document.getElementById('sun-chip-kids').classList.toggle('active', p.chipsKids);
+
+  // Parks
+  document.getElementById('sun-park-grid').innerHTML = p.parks.map(pk => `
+    <div class="park-card ${pk.featured ? 'featured' : ''}" onclick="openSunModal('${pk.id}')">
+      <div class="park-img" style="background:${pk.bg}">
+        <div class="park-img-bg">${pk.ico}</div>
+        <span class="park-badge ${pk.badgeCls}">${pk.badge}</span>
+      </div>
+      <div class="park-body">
+        <div class="park-name">${pk.name}</div>
+        <div class="park-loc">📍 ${pk.loc}</div>
+        <div class="park-tags">${pk.tags.map(t => `<span class="park-tag">${t}</span>`).join('')}</div>
+        <div class="park-bottom">
+          <div><span class="park-price">${pk.price}</span>${pk.orig ? `<span class="park-orig">${pk.orig}</span>` : ''}</div>
+          <button class="park-book">Book →</button>
+        </div>
+      </div>
+      ${pk.why ? `<div class="park-ct-why">${pk.why}</div>` : ''}
+    </div>`).join('');
+
+  // Journey title
+  document.getElementById('sun-journey-title').textContent = p.journeyTitle;
+
+  // Itinerary
+  document.getElementById('jcard-itin-title').textContent = p.itinTitle;
+  document.getElementById('jcard-itin-body').innerHTML = p.itin.map(i => `
+    <div class="itin-row">
+      <div class="itin-time">${i.time}</div>
+      <div class="itin-ico">${i.ico}</div>
+      <div><div class="itin-name">${i.name}</div><div class="itin-note">${i.note}</div></div>
+    </div>`).join('');
+
+  // Addons
+  document.getElementById('jcard-addon-body').innerHTML = p.addons.map(a => `
+    <div class="itin-row" style="align-items:center;">
+      <div class="itin-ico">${a.ico}</div>
+      <div style="flex:1"><div class="itin-name">${a.name}</div><div class="itin-note">${a.why}</div></div>
+      <div style="text-align:right;flex-shrink:0;margin-left:8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--sun-orange2);margin-bottom:4px;">${a.price}</div>
+        <button class="park-book" style="font-size:10px;padding:4px 10px;">Add</button>
+      </div>
+    </div>`).join('');
+
+  // During
+  document.getElementById('jphase-during-content').innerHTML = p.duringNotifs.map(n => `
+    <div class="inpark-notif ${n.cls}">
+      <div class="ip-ico">${n.ico}</div>
+      <div>
+        <div class="ip-from"><span class="ip-from-tag">CLEVERTAP</span> Real-time geo trigger</div>
+        <div class="ip-title">${n.title}</div>
+        <div class="ip-desc">${n.desc}</div>
+        <div class="ip-action">→ ${n.action}</div>
+      </div>
+    </div>`).join('');
+
+  // Post
+  document.getElementById('jcard-post-next-lbl').textContent = p.postNextLbl;
+  document.getElementById('jphase-post-recs').innerHTML = p.postRecs.map(r => `
+    <div class="post-card">
+      <div class="post-ico">${r.ico}</div>
+      <div class="post-title">${r.name}</div>
+      <div class="post-desc">${r.desc}</div>
+      <div class="post-cta">${r.cta}</div>
+    </div>`).join('');
+  document.getElementById('jcard-offer-title').textContent = p.offerTitle;
+  document.getElementById('jcard-offer-text').textContent = p.offerText;
+
+  // NCB cross-sell in Sun
+  document.getElementById('sun-ncb-xs-title').textContent = p.ncbXsTitle;
+  document.getElementById('sun-ncb-xs-desc').textContent = p.ncbXsDesc;
+}
+
+function openSunModal(id) {
+  const m = SUN_MODALS[id] || SUN_MODALS.bundle;
+  document.getElementById('sun-modal-ico').textContent = m.ico;
+  document.getElementById('sun-modal-title').textContent = m.title;
+  document.getElementById('sun-modal-body').textContent = m.body;
+  document.getElementById('sun-modal-detail').innerHTML = m.rows.map(([k,v]) =>
+    `<div class="modal-row"><span>${k}</span><span>${v}</span></div>`).join('');
+  document.getElementById('sun-modal').classList.add('open');
+}
+function closeSunModal() { document.getElementById('sun-modal').classList.remove('open'); }
+
+function switchJPhase(phase, btn) {
+  ['pre','during','post'].forEach(ph => {
+    document.getElementById('jphase-' + ph).classList.toggle('active', ph === phase);
+  });
+  btn.closest('.journey-tabs').querySelectorAll('.jtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function rate(n) {
+  document.getElementById('star-row').querySelectorAll('span').forEach((s,i) => {
+    s.textContent = i < n ? '⭐' : '☆';
+  });
+}
+
+// Close modals on bg click
+document.getElementById('ncb-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeNcbModal(); });
+document.getElementById('sun-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSunModal(); });
+
+// INIT
+renderNcb('linh');
+renderSun('linh');
+rebuildPersonaBtns();
+</script>
+</body>
+</html>
